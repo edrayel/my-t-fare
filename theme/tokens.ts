@@ -43,6 +43,7 @@ export const radius = {
   tile: 12,
   icon: 13,
   pill: 999,
+  full: 999,
   card: 18,
   cardLg: 20,
   sheet: 30,
