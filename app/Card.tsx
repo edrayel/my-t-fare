@@ -17,28 +17,30 @@ export function Card() {
     <View style={styles.screen}>
       <StatusBar style="dark" />
       <Header title="My card" subtitle="Tap to pay anywhere · no smartphone needed" />
-      <View style={styles.card}>
+        <View style={styles.cardWrap}>
+          <View style={styles.card}>
         <Gradient colors={['#0c1611', '#0a4030', '#0C6B4F']} angle={135} radius={22} locations={[0, 0.6, 1]} />
+        <View style={styles.cardGlow} />
         <View style={styles.cardTop}>
-          <View style={styles.mono}>
-            <Text style={styles.monoT}>T</Text>
+          <View style={styles.cardTopL}>
+            <View style={styles.mono}>
+              <Text style={styles.monoT}>T</Text>
+            </View>
+            <Text style={styles.cardBrand}>My T-Fare</Text>
           </View>
-          <Text style={styles.cardBrand}>My T-Fare</Text>
+          <Icon name="cardWifi" size={26} stroke={colors.lime} sw={1.7} />
         </View>
         <View style={styles.chip}>
           <Gradient colors={['#d9c97a', '#b89a3e']} angle={135} radius={7} />
         </View>
-        <Text style={styles.number}>5821 7740 1109</Text>
-        <View style={styles.cardBottom}>
-          <View>
-            <Text style={styles.cardLabel}>Card holder</Text>
+        <View style={styles.cardLower}>
+          <Text style={styles.number}>5821  7740  1109</Text>
+          <View style={styles.cardBottom}>
             <Text style={styles.cardValue}>ADA NWOSU</Text>
-          </View>
-          <View>
-            <Text style={styles.cardLabel}>Issued</Text>
             <Text style={styles.cardValue}>{cd.label} · STU</Text>
           </View>
         </View>
+      </View>
       </View>
 
       <View style={styles.stats}>
@@ -70,12 +72,12 @@ export function Card() {
 
 const styles = StyleSheet.create({
   screen: { flex: 1, backgroundColor: colors.paper },
+  cardWrap: { marginHorizontal: space.gutter },
   card: {
-    marginHorizontal: space.gutter,
+    width: '100%',
     marginTop: 12,
     aspectRatio: 1.6,
     borderRadius: 22,
-    padding: 22,
     backgroundColor: colors.greenDark,
     overflow: 'hidden',
     shadowColor: '#08281c',
@@ -83,17 +85,18 @@ const styles = StyleSheet.create({
     shadowRadius: 20,
     shadowOffset: { width: 0, height: 20 },
     elevation: 10,
-    justifyContent: 'space-between',
   },
-  cardTop: { flexDirection: 'row', alignItems: 'center', gap: 12 },
+  cardGlow: { position: 'absolute', top: -50, right: -40, width: 180, height: 180, borderRadius: 90, backgroundColor: 'rgba(199,240,63,0.1)' },
+  cardTop: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingTop: 22, paddingHorizontal: 22 },
+  cardTopL: { flexDirection: 'row', alignItems: 'center', gap: 9 },
   mono: { width: 40, height: 40, borderRadius: 12, backgroundColor: colors.lime, alignItems: 'center', justifyContent: 'center' },
   monoT: { color: colors.ink, fontSize: 22, fontFamily: 'Sora', fontWeight: '800' },
   cardBrand: { color: '#fff', fontSize: 17, fontFamily: 'Sora', fontWeight: '700' },
-  chip: { width: 42, height: 32, borderRadius: 7, overflow: 'hidden', position: 'relative', marginTop: 18, alignSelf: 'flex-start' },
-  number: { color: '#fff', fontSize: 20, fontFamily: 'Sora', fontWeight: '600', letterSpacing: 2 },
-  cardBottom: { flexDirection: 'row', justifyContent: 'space-between' },
-  cardLabel: { color: 'rgba(255,255,255,0.6)', fontSize: 11, fontFamily: 'Manrope' },
-  cardValue: { color: '#fff', fontSize: 13, fontFamily: 'Sora', fontWeight: '600', marginTop: 3 },
+  chip: { position: 'absolute', bottom: 60, left: 22, width: 42, height: 32, borderRadius: 7, overflow: 'hidden' },
+  cardLower: { position: 'absolute', left: 22, right: 22, bottom: 18 },
+  number: { color: '#eafff5', fontSize: 17, fontFamily: 'Sora', fontWeight: '500', letterSpacing: 2 },
+  cardBottom: { position: 'absolute', left: 0, right: 0, bottom: 0, flexDirection: 'row', justifyContent: 'space-between' },
+  cardValue: { color: '#9fc4b4', fontSize: 12, fontFamily: 'Sora', fontWeight: '600' },
   stats: { flexDirection: 'row', gap: 12, paddingHorizontal: space.gutter, marginTop: 16 },
   stat: { flex: 1, backgroundColor: colors.card, borderRadius: radius.card, padding: 16, borderWidth: 1, borderColor: colors.line },
   statB: {},

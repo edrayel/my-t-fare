@@ -5,6 +5,7 @@ import Animated, {
   withSpring,
   runOnJS,
 } from 'react-native-reanimated';
+import Svg, { Path } from 'react-native-svg';
 import {
   PanGestureHandler,
   State,
@@ -12,15 +13,20 @@ import {
   type GestureEvent,
   type HandlerStateChangeEvent,
 } from 'react-native-gesture-handler';
-import { colors, radius } from '../theme/tokens';
+import { colors } from '../theme/tokens';
 import { formatKobo } from '../lib/money';
 
 const { width } = Dimensions.get('window');
 const TRACK = width - 56;
 const KNOB = 50;
 const TRACK_H = 60;
-const MAX = TRACK - KNOB;
+const RIGHT_PAD = 10;
+const MAX = TRACK - KNOB - RIGHT_PAD;
 const THRESHOLD = 0.82;
+
+const TRACK_R = 18;
+const INNER_R = 14;
+const ARROW = 'M5 12h12M12 6l6 6-6 6';
 
 export function SlideToPay({
   onPay,
@@ -39,16 +45,10 @@ export function SlideToPay({
 
   const fillStyle = useAnimatedStyle(() => ({
     width: KNOB + x.value,
-    borderTopRightRadius: 0,
-    borderBottomRightRadius: 0,
   }));
 
   const knobStyle = useAnimatedStyle(() => ({
     transform: [{ translateX: x.value }],
-  }));
-
-  const labelStyle = useAnimatedStyle(() => ({
-    opacity: 1 - x.value / MAX,
   }));
 
   const onGesture = (e: GestureEvent<PanGestureHandlerEventPayload>) => {
@@ -74,10 +74,12 @@ export function SlideToPay({
       >
         <Animated.View style={[styles.track, trackStyle]}>
           <Animated.View style={[styles.fill, fillStyle]} />
-          <Animated.Text style={[styles.label, labelStyle]}>{label}</Animated.Text>
+          <Animated.Text style={styles.label}>{label}</Animated.Text>
           <Animated.View style={[styles.knob, knobStyle]}>
             <View style={styles.knobInner}>
-              <Text style={styles.knobArrow}>›</Text>
+              <Svg width={22} height={22} viewBox="0 0 24 24" fill="none" stroke="#0a2117" strokeWidth={2.6} strokeLinecap="round" strokeLinejoin="round">
+                <Path d={ARROW} />
+              </Svg>
             </View>
           </Animated.View>
         </Animated.View>
@@ -91,16 +93,17 @@ const styles = StyleSheet.create({
   track: {
     position: 'relative',
     height: TRACK_H,
-    borderRadius: radius.full,
+    borderRadius: TRACK_R,
     overflow: 'hidden',
     justifyContent: 'center',
   },
   fill: {
     position: 'absolute',
-    left: 0,
-    top: 0,
-    bottom: 0,
+    left: 5,
+    top: 5,
+    bottom: 5,
     backgroundColor: 'rgba(199,240,63,0.25)',
+    borderRadius: INNER_R,
   },
   label: {
     position: 'absolute',
@@ -118,19 +121,21 @@ const styles = StyleSheet.create({
     top: 0,
     width: KNOB,
     height: TRACK_H,
-    padding: 5,
   },
   knobInner: {
-    flex: 1,
-    borderRadius: radius.full,
+    position: 'absolute',
+    top: 5,
+    left: 0,
+    right: 0,
+    height: 50,
+    borderRadius: INNER_R,
     backgroundColor: colors.lime,
     alignItems: 'center',
     justifyContent: 'center',
     shadowColor: '#000',
-    shadowOpacity: 0.18,
-    shadowRadius: 8,
-    shadowOffset: { width: 0, height: 3 },
-    elevation: 4,
+    shadowOpacity: 0.2,
+    shadowRadius: 12,
+    shadowOffset: { width: 0, height: 4 },
+    elevation: 5,
   },
-  knobArrow: { color: '#0a2117', fontSize: 26, fontWeight: '700', lineHeight: 26 },
 });
