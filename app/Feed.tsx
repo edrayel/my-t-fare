@@ -59,6 +59,9 @@ export function Feed() {
               <TouchableOpacity style={styles.railBtn}>
                 <Icon name="feedShare" size={24} stroke="#fff" />
               </TouchableOpacity>
+              <TouchableOpacity style={styles.railBtn}>
+                <Icon name="feedSave" size={24} stroke="#fff" />
+              </TouchableOpacity>
             </View>
 
             <TouchableOpacity
@@ -88,7 +91,7 @@ const styles = StyleSheet.create({
   time: { color: 'rgba(255,255,255,0.5)', fontSize: 12, marginLeft: 'auto', fontFamily: 'Manrope' },
   stat: { color: colors.lime, fontSize: 30, fontFamily: 'Sora', fontWeight: '700' },
   statSub: { color: 'rgba(255,255,255,0.6)', fontSize: 13, fontFamily: 'Manrope', marginTop: 2 },
-  title: { color: '#fff', fontSize: 30, fontFamily: 'Sora', fontWeight: '700', letterSpacing: -0.5, marginTop: 18, lineHeight: 36 },
+  title: { color: '#fff', fontSize: 46, fontFamily: 'Sora', fontWeight: '700', letterSpacing: -1, marginTop: 18, lineHeight: 52 },
   body: { color: 'rgba(255,255,255,0.72)', fontSize: 14.5, fontFamily: 'Manrope', marginTop: 10, lineHeight: 21 },
   source: { color: 'rgba(255,255,255,0.45)', fontSize: 12, fontFamily: 'Manrope', marginTop: 14 },
   rail: { flexDirection: 'row', gap: 26, marginTop: 28 },

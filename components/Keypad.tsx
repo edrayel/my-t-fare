@@ -1,5 +1,5 @@
 import { TouchableOpacity, Text, View, StyleSheet } from 'react-native';
-import { colors, typography } from '../theme/tokens';
+import { colors } from '../theme/tokens';
 
 const KEYS = ['1', '2', '3', '4', '5', '6', '7', '8', '9', 'dot', '0', 'del'];
 
@@ -25,7 +25,7 @@ export function Keypad({
             {isDel ? (
               <Text style={styles.del}>⌫</Text>
             ) : (
-              <Text style={[typography.amountSm, styles.key]}>{k}</Text>
+              <Text style={styles.key}>{k}</Text>
             )}
           </TouchableOpacity>
         );
@@ -43,11 +43,13 @@ const styles = StyleSheet.create({
   },
   cell: {
     width: '32%',
-    height: 64,
+    height: 56,
+    backgroundColor: '#fff',
+    borderRadius: 15,
     alignItems: 'center',
     justifyContent: 'center',
     marginBottom: 10,
   },
-  key: { color: colors.ink },
-  del: { fontSize: 26, color: colors.ink },
+  key: { color: colors.ink, fontFamily: 'Sora', fontWeight: '700', fontSize: 21 },
+  del: { fontSize: 24, color: colors.ink },
 });

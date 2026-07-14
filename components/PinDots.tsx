@@ -12,8 +12,8 @@ export function PinDots({ pin, max = 4 }: { pin: string; max?: number }) {
 }
 
 const styles = StyleSheet.create({
-  row: { flexDirection: 'row', gap: 16, justifyContent: 'center' },
-  dot: { width: 16, height: 16, borderRadius: 8 },
-  filled: { backgroundColor: colors.brand },
-  empty: { borderWidth: 1.5, borderColor: colors.fieldEdge },
+  row: { flexDirection: 'row', gap: 28, justifyContent: 'center' },
+  dot: { width: 18, height: 18, borderRadius: 9 },
+  filled: { backgroundColor: colors.green },
+  empty: { borderWidth: 1.5, borderColor: '#cdd5cf' },
 });

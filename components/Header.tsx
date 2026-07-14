@@ -22,7 +22,7 @@ export function Header({
           </TouchableOpacity>
         )}
         <View style={{ flex: 1 }}>
-          <Text style={typography.screenTitle}>{title}</Text>
+          <Text style={{ fontFamily: 'Sora', fontWeight: '700', fontSize: 18, color: colors.ink, letterSpacing: -0.5 }}>{title}</Text>
           {subtitle && <Text style={[styles.sub, { marginTop: 2 }]}>{subtitle}</Text>}
         </View>
         {right}
@@ -32,8 +32,8 @@ export function Header({
 }
 
 const styles = StyleSheet.create({
-  wrap: { paddingHorizontal: space.gutter, paddingTop: 6, paddingBottom: 8 },
+  wrap: { paddingHorizontal: 20, paddingTop: 6, paddingBottom: 8 },
   row: { flexDirection: 'row', alignItems: 'center', gap: 10 },
-  back: { padding: 4, marginLeft: -4 },
+  back: { width: 40, height: 40, borderRadius: 13, borderWidth: 1, borderColor: colors.line, backgroundColor: '#fff', alignItems: 'center', justifyContent: 'center', marginLeft: -4 },
   sub: { ...typography.body, color: colors.sub },
 });

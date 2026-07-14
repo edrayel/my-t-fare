@@ -4,7 +4,7 @@ import { StatusBar } from 'expo-status-bar';
 import { colors, radius, typography, space } from '../theme/tokens';
 import { Header } from '../components/Header';
 import { Icon } from '../components/Icon';
-import { Logo } from '../components/Logo';
+import { Gradient } from '../components/Gradient';
 import { useAppStore } from '../store/useAppStore';
 import { formatKobo } from '../lib/money';
 
@@ -18,8 +18,11 @@ export function Card() {
       <StatusBar style="dark" />
       <Header title="My card" subtitle="Tap to pay anywhere · no smartphone needed" />
       <View style={styles.card}>
+        <Gradient colors={['#0c1611', '#0a4030', '#0C6B4F']} angle={135} />
         <View style={styles.cardTop}>
-          <Logo size={40} />
+          <View style={styles.mono}>
+            <Text style={styles.monoT}>T</Text>
+          </View>
           <Text style={styles.cardBrand}>My T-Fare</Text>
         </View>
         <View style={styles.chip} />
@@ -75,6 +78,8 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   cardTop: { flexDirection: 'row', alignItems: 'center', gap: 12 },
+  mono: { width: 40, height: 40, borderRadius: 12, backgroundColor: colors.lime, alignItems: 'center', justifyContent: 'center' },
+  monoT: { color: colors.ink, fontSize: 22, fontFamily: 'Sora', fontWeight: '800' },
   cardBrand: { color: '#fff', fontSize: 17, fontFamily: 'Sora', fontWeight: '700' },
   chip: { width: 44, height: 32, borderRadius: 6, backgroundColor: colors.lime, marginTop: 18, alignSelf: 'flex-start' },
   number: { color: '#fff', fontSize: 20, fontFamily: 'Sora', fontWeight: '600', letterSpacing: 2 },

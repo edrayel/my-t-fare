@@ -10,6 +10,7 @@ import { CTA } from '../components/CTA';
 import { Keypad } from '../components/Keypad';
 import { PinDots } from '../components/PinDots';
 import { Logo } from '../components/Logo';
+import { Gradient } from '../components/Gradient';
 import {
   RECIPIENTS,
   useAppStore,
@@ -219,6 +220,7 @@ export function GiftSuccess() {
 
   return (
     <View style={styles.giftSuccess}>
+      <Gradient colors={['#00AC57', '#0a4030']} angle={160} />
       <StatusBar style="light" />
       <View style={styles.giftCheck}>
         <Icon name="gift" size={44} stroke={colors.lime} sw={2} />
@@ -259,7 +261,7 @@ export function RequestSuccess() {
       <StatusBar style="dark" />
       <Header title="Request" onBack={() => nav.navigate('giftPick')} />
       <View style={styles.reqCircle}>
-        <Icon name="gift" size={40} stroke={colors.green} sw={2} />
+        <Icon name="gift" size={40} stroke={colors.lime} sw={2} />
       </View>
       <Text style={styles.reqTitle}>Request sent</Text>
       <Text style={styles.reqAmount}>{formatKobo(amount)}</Text>
@@ -372,7 +374,7 @@ const styles = StyleSheet.create({
   gsLabel: { color: 'rgba(255,255,255,0.7)', fontSize: 13, fontFamily: 'Manrope' },
   gsValue: { color: '#fff', fontFamily: 'Sora', fontWeight: '600', fontSize: 14 },
   gsBtns: { width: '100%', marginTop: 24 },
-  reqCircle: { width: 88, height: 88, borderRadius: 44, backgroundColor: colors.tintCard, alignItems: 'center', justifyContent: 'center', alignSelf: 'center', marginTop: 20 },
+  reqCircle: { width: 88, height: 88, borderRadius: 44, backgroundColor: colors.green, alignItems: 'center', justifyContent: 'center', alignSelf: 'center', marginTop: 20 },
   reqTitle: { textAlign: 'center', marginTop: 18, fontSize: 22, fontFamily: 'Sora', fontWeight: '700', color: colors.ink },
   reqAmount: { textAlign: 'center', marginTop: 6, fontSize: 40, fontFamily: 'Sora', fontWeight: '700', color: colors.ink, letterSpacing: -1 },
   reqSub: { textAlign: 'center', color: colors.sub, fontSize: 14, fontFamily: 'Manrope' },

@@ -32,14 +32,14 @@ export function Sheet({
       <Animated.View style={[styles.panel, { height: height as ViewStyle['height'] }, panel]}>
         <View style={styles.handle} />
         {title && <Text style={[typography.screenTitle, styles.title]}>{title}</Text>}
-        <View style={{ paddingHorizontal: space.gutter, paddingBottom: space.gutterLg }}>{children}</View>
+        <View style={{ paddingHorizontal: 22, paddingBottom: 26 }}>{children}</View>
       </Animated.View>
     </Modal>
   );
 }
 
 const styles = StyleSheet.create({
-  backdrop: { flex: 1, backgroundColor: 'rgba(8,15,11,0.45)' },
+  backdrop: { flex: 1, backgroundColor: 'rgba(8,15,11,0.5)' },
   panel: {
     position: 'absolute',
     left: 0,
@@ -56,12 +56,12 @@ const styles = StyleSheet.create({
     elevation: 14,
   },
   handle: {
-    width: 44,
-    height: 5,
-    borderRadius: 3,
-    backgroundColor: colors.line,
+    width: 40,
+    height: 4,
+    borderRadius: 2,
+    backgroundColor: '#d6dcd5',
     alignSelf: 'center',
     marginBottom: 10,
   },
-  title: { paddingHorizontal: space.gutter, marginBottom: 10, fontSize: 20 },
+  title: { paddingHorizontal: 22, marginBottom: 10, fontSize: 19 },
 });

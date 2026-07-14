@@ -19,7 +19,9 @@ export function Toast() {
   if (!toast) return null;
   return (
     <Animated.View style={[styles.pill, { opacity }]} pointerEvents="none">
-      <Icon name="check" size={18} stroke={colors.lime} />
+      <View style={styles.badge}>
+        <Icon name="check" size={16} stroke="#0a2117" sw={2.4} />
+      </View>
       <Text style={styles.msg}>{toast}</Text>
     </Animated.View>
   );
@@ -28,20 +30,29 @@ export function Toast() {
 const styles = StyleSheet.create({
   pill: {
     position: 'absolute',
-    bottom: 96,
-    alignSelf: 'center',
+    bottom: 86,
+    left: 18,
+    right: 18,
     backgroundColor: colors.greenDark,
     borderRadius: radius.pill,
     paddingVertical: 11,
-    paddingHorizontal: 18,
+    paddingHorizontal: 16,
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 9,
+    gap: 10,
     shadowColor: '#000',
     shadowOpacity: 0.3,
     shadowRadius: 16,
     shadowOffset: { width: 0, height: 8 },
     elevation: 8,
+  },
+  badge: {
+    width: 26,
+    height: 26,
+    borderRadius: 13,
+    backgroundColor: colors.lime,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   msg: { ...typography.body, color: colors.paper, fontSize: 13.5, fontFamily: 'Sora' },
 });

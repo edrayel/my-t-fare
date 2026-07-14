@@ -31,7 +31,7 @@ export function BottomNav({ state, descriptors, navigation }: BottomTabBarProps)
         onPress={() => (navigation as any).navigate('scan')}
       >
         <View style={styles.fabInner}>
-          <Icon name="qr" size={26} stroke={colors.ink} />
+          <Icon name="qr" size={26} stroke={colors.lime} />
         </View>
       </TouchableOpacity>
       {TABS.slice(2).map((t, i) => (
@@ -77,12 +77,12 @@ const styles = StyleSheet.create({
     paddingBottom: 8,
   },
   tab: { flex: 1, alignItems: 'center', gap: 3 },
-  label: { fontSize: 11, fontWeight: '600', fontFamily: 'Manrope' },
+  label: { fontSize: 10.5, fontWeight: '700', fontFamily: 'Sora' },
   fab: { width: 58, height: 58, marginTop: -26, alignItems: 'center', justifyContent: 'center' },
   fabInner: {
     width: 58,
     height: 58,
-    borderRadius: 29,
+    borderRadius: 19,
     backgroundColor: colors.green,
     alignItems: 'center',
     justifyContent: 'center',

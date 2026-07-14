@@ -32,10 +32,10 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    paddingHorizontal: space.gutter,
+    paddingHorizontal: 22,
     marginTop: space.sectionTop,
     marginBottom: space.sectionGap,
   },
-  title: { ...typography.label, fontSize: 17 },
+  title: { ...typography.label, fontSize: 15, fontWeight: '700' },
   see: { ...typography.body, color: colors.brand, fontWeight: '600' },
 });

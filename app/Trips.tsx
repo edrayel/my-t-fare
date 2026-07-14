@@ -35,9 +35,8 @@ export function Trips() {
                 onPress={() => nav.navigate('receipt', { trip: t })}
                 style={styles.rowWrap}
               >
-                <TripRow type={t.type} title={t.title} sub={t.sub} amount={t.amount} time={t.time} />
+                <TripRow type={t.type} title={t.title} sub={t.sub} amount={t.amount} time={t.time} last={i === items.length - 1} />
               </TouchableOpacity>
-              {i < items.length - 1 && <View style={styles.div} />}
             </View>
           ))}
         </View>
@@ -79,7 +78,7 @@ const styles = StyleSheet.create({
   chipT: { color: colors.ink, fontFamily: 'Manrope', fontWeight: '600', fontSize: 13 },
   chipTOn: { color: '#fff' },
   group: { paddingHorizontal: space.gutter, fontSize: 13, fontFamily: 'Manrope', fontWeight: '700', color: colors.sub, marginBottom: 6 },
-  card: { backgroundColor: colors.card, marginHorizontal: space.gutter, borderRadius: radius.card, borderWidth: 1, borderColor: colors.line, paddingHorizontal: 14 },
+  card: { backgroundColor: colors.card, marginHorizontal: space.gutter, borderRadius: radius.card, borderWidth: 1, borderColor: colors.line, paddingHorizontal: 18 },
   rowWrap: {},
   div: { height: 1, backgroundColor: colors.rowDivider },
 });

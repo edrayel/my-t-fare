@@ -38,10 +38,10 @@ export function Processing() {
 const styles = StyleSheet.create({
   screen: { flex: 1, backgroundColor: colors.greenDark, alignItems: 'center', justifyContent: 'center', gap: 22 },
   spinner: {
-    width: 54,
-    height: 54,
-    borderRadius: 27,
-    borderWidth: 4,
+    width: 64,
+    height: 64,
+    borderRadius: 32,
+    borderWidth: 5,
     borderColor: 'rgba(199,240,63,0.25)',
     borderTopColor: colors.lime,
   },

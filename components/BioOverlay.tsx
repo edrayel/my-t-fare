@@ -9,7 +9,7 @@ export function BioOverlay() {
   return (
     <View style={styles.scrim}>
       <View style={styles.tile}>
-        <Icon name="finger" size={42} stroke={colors.lime} sw={1.8} />
+        <Icon name="finger" size={50} stroke={colors.lime} sw={1.8} />
       </View>
       <Text style={[typography.label, styles.text]}>Authenticating…</Text>
     </View>
@@ -27,7 +27,7 @@ const styles = StyleSheet.create({
   tile: {
     width: 96,
     height: 96,
-    borderRadius: radius.cardLg,
+    borderRadius: 30,
     backgroundColor: 'rgba(199,240,63,0.12)',
     alignItems: 'center',
     justifyContent: 'center',

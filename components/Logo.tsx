@@ -1,15 +1,19 @@
-import { StyleSheet, Text, View, ViewStyle } from 'react-native';
-import { colors, radius } from '../theme/tokens';
+import { StyleSheet, Text, View } from 'react-native';
+import { colors } from '../theme/tokens';
 
-export function Logo({ size = 40, bg = colors.green }: { size?: number; bg?: string }) {
+export function Logo({ size = 40 }: { size?: number }) {
   return (
-    <View style={[styles.box, { width: size, height: size, borderRadius: size * 0.32, backgroundColor: bg }]}>
-      <Text style={[styles.t, { fontSize: size * 0.5 }]}>T</Text>
+    <View style={styles.row} accessibilityLabel="My T-Fare">
+      <Text style={[styles.mark, { fontSize: size }]}>
+        <Text style={{ color: colors.brand }}>MY</Text>
+        <Text style={{ color: colors.ink }}>T</Text>
+        <Text style={{ color: colors.brand }}>-FARE</Text>
+      </Text>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  box: { alignItems: 'center', justifyContent: 'center' },
-  t: { color: '#fff', fontFamily: 'Sora', fontWeight: '800', letterSpacing: -1 },
+  row: { flexDirection: 'row', alignItems: 'center' },
+  mark: { fontFamily: 'Sora', fontWeight: '800', letterSpacing: -0.5 },
 });

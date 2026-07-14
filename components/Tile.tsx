@@ -1,5 +1,5 @@
 import { TouchableOpacity, Text, View, StyleSheet } from 'react-native';
-import { colors, radius, typography, space } from '../theme/tokens';
+import { colors, radius } from '../theme/tokens';
 import { Icon } from './Icon';
 
 export function Tile({
@@ -8,20 +8,22 @@ export function Tile({
   onPress,
   sub,
   value,
-  tinted,
+  accent,
+  stroke,
 }: {
   icon: Parameters<typeof Icon>[0]['name'];
   label: string;
   onPress?: () => void;
   sub?: string;
   value?: string;
-  tinted?: boolean;
+  accent?: string;
+  stroke?: string;
 }) {
   const Comp = onPress ? TouchableOpacity : View;
   return (
     <Comp activeOpacity={0.85} onPress={onPress} style={styles.tile}>
-      <View style={[styles.icon, tinted && styles.iconTint]}>
-        <Icon name={icon} size={22} stroke={tinted ? colors.brand : colors.green} />
+      <View style={[styles.icon, { backgroundColor: accent ?? colors.tintCard }]}>
+        <Icon name={icon} size={20} stroke={stroke ?? colors.green} />
       </View>
       {value ? (
         <Text style={styles.value}>{value}</Text>
@@ -35,10 +37,12 @@ export function Tile({
 
 const styles = StyleSheet.create({
   tile: {
+    width: 72,
     backgroundColor: colors.card,
-    borderRadius: radius.tile,
-    padding: 14,
-    alignItems: 'flex-start',
+    borderRadius: 18,
+    paddingVertical: 13,
+    paddingHorizontal: 4,
+    alignItems: 'center',
     borderWidth: 1,
     borderColor: colors.line,
     shadowColor: colors.green,
@@ -48,16 +52,14 @@ const styles = StyleSheet.create({
     elevation: 1,
   },
   icon: {
-    width: 42,
-    height: 42,
+    width: 40,
+    height: 40,
     borderRadius: radius.icon,
-    backgroundColor: colors.tintCard,
     alignItems: 'center',
     justifyContent: 'center',
-    marginBottom: 10,
+    marginBottom: 8,
   },
-  iconTint: { backgroundColor: colors.tintCard },
-  label: { ...typography.body, color: colors.ink, fontWeight: '600' },
-  value: { ...typography.label, fontSize: 18, color: colors.ink },
-  sub: { ...typography.body, marginTop: 2 },
+  label: { fontSize: 11, fontFamily: 'Sora', fontWeight: '600', color: colors.ink, textAlign: 'center' },
+  value: { fontSize: 14, fontFamily: 'Sora', fontWeight: '700', color: colors.ink },
+  sub: { fontSize: 10, color: colors.sub, marginTop: 2, textAlign: 'center' },
 });

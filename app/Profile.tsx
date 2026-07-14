@@ -16,6 +16,7 @@ const SETTINGS: { icon: any; label: string; value: string }[] = [
 export function Profile() {
   const nav = useNavigation<any>();
   const role = useAppStore((s) => s.role);
+  const points = useAppStore((s) => s.points);
   const signOut = useAppStore((s) => s.signOut);
 
   return (
@@ -38,7 +39,7 @@ export function Profile() {
               <Icon name={s.icon} size={20} stroke={colors.green} />
             </View>
             <Text style={styles.rowLabel}>{s.label}</Text>
-            <Text style={styles.rowValue}>{s.value}</Text>
+            <Text style={styles.rowValue}>{s.label === 'My T-Fare Points' ? `${points} pts` : s.value}</Text>
           </TouchableOpacity>
         ))}
       </View>

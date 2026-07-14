@@ -15,6 +15,7 @@ import { Icon } from '../components/Icon';
 import { CTA } from '../components/CTA';
 import { Keypad } from '../components/Keypad';
 import { PinDots } from '../components/PinDots';
+import { Gradient } from '../components/Gradient';
 import { SLIDES, ROLES, useAppStore } from '../store/useAppStore';
 import { bioAuth } from '../lib/biometric';
 
@@ -37,6 +38,7 @@ export function Onboarding({ navigation }: any) {
         renderItem={({ item }) => (
           <View style={styles.slide}>
             <View style={styles.slideCard}>
+              <Gradient colors={['#0a4030', '#00AC57']} angle={160} />
               <View style={styles.slideTile}>
                 <Icon name={item.icon} size={56} stroke={colors.paper} sw={1.8} />
               </View>
@@ -146,9 +148,11 @@ export function SignIn({ navigation }: any) {
             <Text style={styles.flag}>🇳🇬</Text>
             <Text style={styles.prefixT}>+234</Text>
           </View>
-          <TextInput style={styles.phoneInput} defaultValue="803 124 9920" keyboardType="phone-pad" />
+          <TextInput style={styles.phoneInput} defaultValue="803 124 9920" editable={false} showSoftInputOnFocus={false} />
         </View>
-        <PinDots pin={pin} />
+            <View style={{ marginTop: 22 }}>
+              <PinDots pin={pin} />
+            </View>
         <View style={styles.keypadWrap}>
           <Keypad onKey={onKey} onDelete={() => setPin((p) => p.slice(0, -1))} />
         </View>
@@ -271,7 +275,7 @@ const styles = StyleSheet.create({
   fieldLabel: { marginTop: 22, fontSize: 15, fontFamily: 'Sora', fontWeight: '600', color: colors.ink },
   chips: { flexDirection: 'row', flexWrap: 'wrap', gap: 10, marginTop: 12 },
   chip: { paddingVertical: 10, paddingHorizontal: 16, borderRadius: 999, borderWidth: 1.5, borderColor: colors.fieldEdge, backgroundColor: colors.card },
-  chipOn: { borderColor: colors.brand, backgroundColor: colors.tintCard },
+  chipOn: { borderColor: colors.brand, backgroundColor: '#E4F2EC' },
   chipT: { color: colors.ink, fontFamily: 'Manrope', fontWeight: '600' },
   chipTOn: { color: colors.brand },
 });

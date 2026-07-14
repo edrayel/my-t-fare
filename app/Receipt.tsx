@@ -14,7 +14,6 @@ export function Receipt() {
   const route = useRoute<any>();
   const fareNow = useAppStore((s) => s.fareNow());
   const lastRef = useAppStore((s) => s.lastRef);
-  const balance = useAppStore((s) => s.balance);
 
   const trip: Trip | undefined = route.params?.trip;
   const amount = trip ? Math.abs(trip.amount) : fareNow;
@@ -38,8 +37,6 @@ export function Receipt() {
           <ResultRow label="Service fee" value="₦0.00 · fee-free" />
           <ResultRow label="Reference" value={ref} />
           <ResultRow label="Paid with" value="My T-Fare wallet" />
-          <View style={styles.div} />
-          <ResultRow label="Balance" value={<Text style={{ ...typography.label, color: colors.green }}>{formatKobo(balance)}</Text>} />
         </View>
       </View>
       <View style={styles.btns}>
@@ -58,6 +55,5 @@ const styles = StyleSheet.create({
   paidPill: { backgroundColor: colors.green, borderRadius: radius.pill, paddingVertical: 5, paddingHorizontal: 14, marginTop: 10 },
   paidT: { color: '#fff', fontFamily: 'Sora', fontWeight: '700', fontSize: 12, letterSpacing: 1 },
   rows: { width: '100%', marginTop: 18 },
-  div: { height: 1, backgroundColor: colors.rowDivider, marginVertical: 6 },
   btns: { paddingHorizontal: space.gutter, marginTop: 18, width: '100%' },
 });

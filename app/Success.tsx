@@ -3,6 +3,7 @@ import { useNavigation } from '@react-navigation/native';
 import { StatusBar } from 'expo-status-bar';
 import { colors, radius, typography, space } from '../theme/tokens';
 import { Icon } from '../components/Icon';
+import { Gradient } from '../components/Gradient';
 import { CTA } from '../components/CTA';
 import { ResultRow } from '../components/ResultRow';
 import { useAppStore } from '../store/useAppStore';
@@ -18,8 +19,9 @@ export function Success() {
   return (
     <View style={styles.screen}>
       <StatusBar style="light" />
+      <Gradient colors={['#0C6B4F', '#084030']} angle={170} />
       <View style={styles.check}>
-        <Icon name="check" size={48} stroke={colors.lime} sw={2.4} />
+        <Icon name="check" size={48} stroke="#0a2117" sw={2.4} />
       </View>
       <Text style={styles.title}>Payment successful</Text>
       <Text style={styles.amount}>{formatKobo(fareNow)}</Text>
@@ -28,9 +30,9 @@ export function Success() {
       </Text>
 
       <View style={styles.rows}>
-        <ResultRow label="Route" value={`${cd.routes[0][0]} → ${cd.routes[0][1]}`} />
-        <ResultRow label="Reference" value={lastRef || 'MTF-XXXX'} />
-        <ResultRow label="New balance" value={<Text style={{ ...typography.label, color: colors.lime }}>{formatKobo(balance)}</Text>} />
+        <ResultRow label="Route" value={`${cd.routes[0][0]} → ${cd.routes[0][1]}`} onDark />
+        <ResultRow label="Reference" value={lastRef || 'MTF-XXXX'} onDark />
+        <ResultRow label="New balance" value={<Text style={{ ...typography.label, color: colors.lime }}>{formatKobo(balance)}</Text>} onDark />
       </View>
 
       <View style={styles.btns}>
@@ -47,7 +49,7 @@ export function Success() {
 }
 
 const styles = StyleSheet.create({
-  screen: { flex: 1, backgroundColor: colors.green, alignItems: 'center', paddingTop: 96, paddingHorizontal: space.gutterLg },
+  screen: { flex: 1, backgroundColor: colors.greenDark, alignItems: 'center', paddingTop: 96, paddingHorizontal: space.gutterLg },
   check: { width: 96, height: 96, borderRadius: 48, backgroundColor: 'rgba(199,240,63,0.15)', alignItems: 'center', justifyContent: 'center', marginBottom: 20 },
   title: { color: colors.paper, fontSize: 22, fontFamily: 'Sora', fontWeight: '700' },
   amount: { color: colors.lime, fontSize: 44, fontFamily: 'Sora', fontWeight: '700', letterSpacing: -1, marginTop: 8 },
