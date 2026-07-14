@@ -78,7 +78,7 @@ const styles = StyleSheet.create({
   chipT: { color: colors.ink, fontFamily: 'Manrope', fontWeight: '600', fontSize: 13 },
   chipTOn: { color: '#fff' },
   group: { paddingHorizontal: space.gutter, fontSize: 13, fontFamily: 'Manrope', fontWeight: '700', color: colors.sub, marginBottom: 6 },
-  card: { backgroundColor: colors.card, marginHorizontal: space.gutter, borderRadius: radius.card, borderWidth: 1, borderColor: colors.line, paddingHorizontal: 18 },
+  card: { backgroundColor: colors.card, marginHorizontal: space.gutter, borderRadius: radius.card, borderWidth: 1, borderColor: colors.line, overflow: 'hidden' },
   rowWrap: {},
   div: { height: 1, backgroundColor: colors.rowDivider },
 });
