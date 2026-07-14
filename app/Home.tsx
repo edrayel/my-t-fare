@@ -133,6 +133,49 @@ export function Home() {
         ))}
       </View>
 
+      <View style={styles.faresCard}>
+        <View style={styles.faresHead}>
+          <View style={styles.faresHeadL}>
+            <Icon name="pin" size={16} stroke={colors.green} sw={2} />
+            <Text style={styles.faresTitle}>Fares near you</Text>
+          </View>
+          <TouchableOpacity style={styles.faresCampus} onPress={() => setCampusOpen(true)}>
+            <Text style={styles.faresCampusT}>{cd.label}</Text>
+            <Icon name="caret" size={13} stroke={colors.green} sw={2.4} />
+          </TouchableOpacity>
+        </View>
+        {cd.routes.map(([o, d, fare]) => (
+          <View key={`${o}-${d}`} style={styles.fareRow}>
+            <Text style={styles.fareRoute}>{o} → {d}</Text>
+            <Text style={styles.fareAmt}>₦{Math.round(fare / 100)}</Text>
+          </View>
+        ))}
+      </View>
+
+      <View style={styles.liveCard}>
+        <View style={styles.liveIconWrap}>
+          <View style={styles.livePulse} />
+          <View style={styles.liveIcon}>
+            <Icon name="shuttle" size={22} stroke={colors.lime} sw={1.8} />
+          </View>
+        </View>
+        <View style={{ flex: 1 }}>
+          <View style={styles.liveTop}>
+            <Text style={styles.liveTitle}>{cd.vehicle}</Text>
+            <View style={styles.liveBadge}>
+              <Text style={styles.liveBadgeT}>4 MIN AWAY</Text>
+            </View>
+          </View>
+          <Text style={styles.liveSub}>Faculty of Science → Main Gate</Text>
+        </View>
+        <View style={styles.bars}>
+          <View style={[styles.bar, { height: 10, backgroundColor: '#cfe0d7' }]} />
+          <View style={[styles.bar, { height: 18, backgroundColor: colors.green }]} />
+          <View style={[styles.bar, { height: 26, backgroundColor: colors.green }]} />
+          <View style={[styles.bar, { height: 14, backgroundColor: '#cfe0d7' }]} />
+        </View>
+      </View>
+
       <SectionHead title="Recent activity" onSeeAll={() => nav.navigate('trips')} />
       <View style={styles.activity}>
         {trips.slice(0, 3).map((t, i) => (
@@ -216,4 +259,24 @@ const styles = StyleSheet.create({
   svcIcon: { width: 40, height: 40, borderRadius: 14, backgroundColor: colors.tintCard, alignItems: 'center', justifyContent: 'center', marginBottom: 8 },
   svcT: { color: colors.ink, fontSize: 11, fontFamily: 'Manrope', fontWeight: '600' },
   activity: { backgroundColor: colors.card, marginHorizontal: space.gutter, borderRadius: radius.card, borderWidth: 1, borderColor: colors.line, paddingHorizontal: 18 },
+  faresCard: { marginHorizontal: space.gutter, marginTop: 18, backgroundColor: colors.card, borderWidth: 1, borderColor: colors.line, borderRadius: radius.cardLg, paddingVertical: 15, paddingHorizontal: 16 },
+  faresHead: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginBottom: 10 },
+  faresHeadL: { flexDirection: 'row', alignItems: 'center', gap: 7 },
+  faresTitle: { fontFamily: 'Sora', fontWeight: '600', fontSize: 14, color: colors.ink },
+  faresCampus: { flexDirection: 'row', alignItems: 'center', gap: 4 },
+  faresCampusT: { fontFamily: 'Manrope', fontWeight: '700', fontSize: 12, color: colors.green },
+  fareRow: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingVertical: 7, borderTopWidth: 1, borderTopColor: '#F4F2EB' },
+  fareRoute: { fontFamily: 'Manrope', fontWeight: '500', fontSize: 13, color: colors.inkSoft },
+  fareAmt: { fontFamily: 'Sora', fontWeight: '700', fontSize: 13.5, color: colors.ink },
+  liveCard: { flexDirection: 'row', alignItems: 'center', gap: 13, marginHorizontal: space.gutter, marginTop: 14, backgroundColor: colors.card, borderWidth: 1, borderColor: colors.line, borderRadius: radius.cardLg, paddingVertical: 15, paddingHorizontal: 16 },
+  liveIconWrap: { width: 46, height: 46 },
+  livePulse: { position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, borderRadius: 14, backgroundColor: 'rgba(12,107,79,0.12)' },
+  liveIcon: { position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, borderRadius: 14, backgroundColor: colors.green, alignItems: 'center', justifyContent: 'center' },
+  liveTop: { flexDirection: 'row', alignItems: 'center', gap: 7 },
+  liveTitle: { fontFamily: 'Sora', fontWeight: '600', fontSize: 14.5, color: colors.ink },
+  liveBadge: { backgroundColor: '#E4F2EC', borderRadius: 6, paddingVertical: 2, paddingHorizontal: 7 },
+  liveBadgeT: { fontFamily: 'Sora', fontWeight: '700', fontSize: 10.5, color: colors.green },
+  liveSub: { fontFamily: 'Manrope', fontWeight: '500', fontSize: 12.5, color: colors.subSoft, marginTop: 2 },
+  bars: { flexDirection: 'row', alignItems: 'flex-end', gap: 3, height: 26 },
+  bar: { width: 4, borderRadius: 2 },
 });
