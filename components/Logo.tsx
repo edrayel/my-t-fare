@@ -1,19 +1,22 @@
-import { StyleSheet, Text, View } from 'react-native';
-import { colors } from '../theme/tokens';
+import { Image, StyleSheet } from 'react-native';
+
+const LOGO_W = 404;
+const LOGO_H = 142;
+const RATIO = LOGO_W / LOGO_H;
 
 export function Logo({ size = 40 }: { size?: number }) {
+  const height = size;
+  const width = height * RATIO;
   return (
-    <View style={styles.row} accessibilityLabel="My T-Fare">
-      <Text style={[styles.mark, { fontSize: size }]}>
-        <Text style={{ color: colors.brand }}>MY</Text>
-        <Text style={{ color: colors.ink }}>T</Text>
-        <Text style={{ color: colors.brand }}>-FARE</Text>
-      </Text>
-    </View>
+    <Image
+      source={require('../assets/logo.png')}
+      style={[styles.logo, { width, height }]}
+      resizeMode="contain"
+      accessibilityLabel="My T-Fare"
+    />
   );
 }
 
 const styles = StyleSheet.create({
-  row: { flexDirection: 'row', alignItems: 'center' },
-  mark: { fontFamily: 'Sora', fontWeight: '800', letterSpacing: -0.5 },
+  logo: { resizeMode: 'contain' },
 });

@@ -18,16 +18,18 @@ export function Gradient({
   angle = 160,
   locations,
   style,
+  radius = 0,
 }: {
   colors: string[];
   angle?: number;
   locations?: number[];
   style?: object;
+  radius?: number;
 }) {
   const coords = angleToCoords(angle);
   return (
     <Svg
-      style={[StyleSheet.absoluteFill, style]}
+      style={[StyleSheet.absoluteFill, { borderRadius: radius, overflow: 'hidden' }, style]}
       width="100%"
       height="100%"
       viewBox="0 0 100 100"

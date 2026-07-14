@@ -1,4 +1,4 @@
-import { TouchableOpacity, Text, View, StyleSheet } from 'react-native';
+import { TouchableOpacity, Text, View, StyleSheet, StatusBar } from 'react-native';
 import { colors, typography, space } from '../theme/tokens';
 import { Icon } from './Icon';
 
@@ -14,7 +14,7 @@ export function Header({
   onBack?: () => void;
 }) {
   return (
-    <View style={styles.wrap}>
+    <View style={[styles.wrap, { paddingTop: (StatusBar.currentHeight ?? 0) + 10 }]}>
       <View style={styles.row}>
         {onBack && (
           <TouchableOpacity onPress={onBack} style={styles.back} hitSlop={10}>
@@ -32,7 +32,7 @@ export function Header({
 }
 
 const styles = StyleSheet.create({
-  wrap: { paddingHorizontal: 20, paddingTop: 6, paddingBottom: 8 },
+  wrap: { paddingHorizontal: 20, paddingBottom: 8 },
   row: { flexDirection: 'row', alignItems: 'center', gap: 10 },
   back: { width: 40, height: 40, borderRadius: 13, borderWidth: 1, borderColor: colors.line, backgroundColor: '#fff', alignItems: 'center', justifyContent: 'center', marginLeft: -4 },
   sub: { ...typography.body, color: colors.sub },

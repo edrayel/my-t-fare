@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import {
   View,
   Text,
@@ -22,6 +22,10 @@ import { bioAuth } from '../lib/biometric';
 /* ---------------- Onboarding ---------------- */
 export function Onboarding({ navigation }: any) {
   const [i, setI] = useState(0);
+  const listRef = useRef<any>(null);
+  useEffect(() => {
+    listRef.current?.scrollToIndex({ index: i, animated: true });
+  }, [i]);
   const last = i === SLIDES.length - 1;
   return (
     <View style={styles.screen}>
@@ -30,18 +34,24 @@ export function Onboarding({ navigation }: any) {
         <Text style={styles.skipT}>Skip</Text>
       </TouchableOpacity>
       <FlatList
+        ref={listRef}
         data={SLIDES}
         horizontal
         pagingEnabled
         scrollEnabled={false}
         showsHorizontalScrollIndicator={false}
+        getItemLayout={(_, idx) => ({ length: W, offset: W * idx, index: idx })}
         renderItem={({ item }) => (
           <View style={styles.slide}>
             <View style={styles.slideCard}>
-              <Gradient colors={['#0a4030', '#00AC57']} angle={160} />
+              <Gradient colors={['#0a4030', '#00AC57']} angle={160} radius={34} />
+              <View style={styles.deco1} />
+              <View style={styles.deco2} />
               <View style={styles.slideTile}>
-                <Icon name={item.icon} size={56} stroke={colors.paper} sw={1.8} />
+                <Icon name={item.icon} size={56} stroke="#fff" sw={1.8} />
               </View>
+            </View>
+            <View style={styles.slideCopy}>
               <Text style={styles.slideTitle}>{item.title}</Text>
               <Text style={styles.slideBody}>{item.body}</Text>
             </View>
@@ -216,30 +226,29 @@ const styles = StyleSheet.create({
   skipT: { color: colors.mut, fontWeight: '600', fontFamily: 'Manrope' },
   slide: { width: W, alignItems: 'center', justifyContent: 'center', paddingTop: 50 },
   slideCard: {
-    width: W - 56,
-    height: 460,
-    borderRadius: 26,
+    width: Math.min(W - 56, 320),
+    aspectRatio: 1,
+    borderRadius: 34,
+    overflow: 'hidden',
     backgroundColor: colors.green,
-    padding: 28,
+    position: 'relative',
+    alignItems: 'center',
     justifyContent: 'center',
-    shadowColor: colors.brand,
-    shadowOpacity: 0.3,
-    shadowRadius: 24,
-    shadowOffset: { width: 0, height: 12 },
-    elevation: 8,
   },
+  deco1: { position: 'absolute', top: -40, right: -30, width: 170, height: 170, borderRadius: 85, backgroundColor: 'rgba(255,255,255,0.08)' },
+  deco2: { position: 'absolute', bottom: -50, left: -40, width: 200, height: 200, borderRadius: 100, backgroundColor: 'rgba(199,240,63,0.10)' },
   slideTile: {
     width: 120,
     height: 120,
-    borderRadius: 28,
-    backgroundColor: 'rgba(255,255,255,0.14)',
+    borderRadius: 36,
+    backgroundColor: 'rgba(255,255,255,0.12)',
     alignItems: 'center',
     justifyContent: 'center',
-    marginBottom: 28,
   },
-  slideTitle: { color: colors.paper, fontSize: 24, fontFamily: 'Sora', fontWeight: '700', letterSpacing: -0.5 },
-  slideBody: { color: 'rgba(255,255,255,0.86)', fontSize: 15, fontFamily: 'Manrope', marginTop: 12, lineHeight: 22 },
-  dots: { flexDirection: 'row', justifyContent: 'center', gap: 7, marginVertical: 24 },
+  slideCopy: { alignItems: 'center', paddingHorizontal: 4, marginTop: 22 },
+  slideTitle: { color: '#0B1512', fontSize: 25, fontFamily: 'Sora', fontWeight: '700', letterSpacing: -0.6, lineHeight: 29, textAlign: 'center' },
+  slideBody: { color: '#6b7a72', fontSize: 14, fontFamily: 'Manrope', fontWeight: '500', lineHeight: 22, marginTop: 11, textAlign: 'center' },
+  dots: { flexDirection: 'row', justifyContent: 'center', gap: 7, marginTop: 22, marginBottom: 18 },
   dot: { height: 7, width: 7, borderRadius: 4, backgroundColor: '#d3dad4' },
   dotA: { width: 22, backgroundColor: colors.brand },
   dotI: {},

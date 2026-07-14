@@ -18,14 +18,16 @@ export function Card() {
       <StatusBar style="dark" />
       <Header title="My card" subtitle="Tap to pay anywhere · no smartphone needed" />
       <View style={styles.card}>
-        <Gradient colors={['#0c1611', '#0a4030', '#0C6B4F']} angle={135} />
+        <Gradient colors={['#0c1611', '#0a4030', '#0C6B4F']} angle={135} radius={22} locations={[0, 0.6, 1]} />
         <View style={styles.cardTop}>
           <View style={styles.mono}>
             <Text style={styles.monoT}>T</Text>
           </View>
           <Text style={styles.cardBrand}>My T-Fare</Text>
         </View>
-        <View style={styles.chip} />
+        <View style={styles.chip}>
+          <Gradient colors={['#d9c97a', '#b89a3e']} angle={135} radius={7} />
+        </View>
         <Text style={styles.number}>5821 7740 1109</Text>
         <View style={styles.cardBottom}>
           <View>
@@ -72,16 +74,22 @@ const styles = StyleSheet.create({
     marginHorizontal: space.gutter,
     marginTop: 12,
     aspectRatio: 1.6,
-    borderRadius: radius.cardLg,
-    padding: 20,
+    borderRadius: 22,
+    padding: 22,
     backgroundColor: colors.greenDark,
+    overflow: 'hidden',
+    shadowColor: '#08281c',
+    shadowOpacity: 0.4,
+    shadowRadius: 20,
+    shadowOffset: { width: 0, height: 20 },
+    elevation: 10,
     justifyContent: 'space-between',
   },
   cardTop: { flexDirection: 'row', alignItems: 'center', gap: 12 },
   mono: { width: 40, height: 40, borderRadius: 12, backgroundColor: colors.lime, alignItems: 'center', justifyContent: 'center' },
   monoT: { color: colors.ink, fontSize: 22, fontFamily: 'Sora', fontWeight: '800' },
   cardBrand: { color: '#fff', fontSize: 17, fontFamily: 'Sora', fontWeight: '700' },
-  chip: { width: 44, height: 32, borderRadius: 6, backgroundColor: colors.lime, marginTop: 18, alignSelf: 'flex-start' },
+  chip: { width: 42, height: 32, borderRadius: 7, overflow: 'hidden', position: 'relative', marginTop: 18, alignSelf: 'flex-start' },
   number: { color: '#fff', fontSize: 20, fontFamily: 'Sora', fontWeight: '600', letterSpacing: 2 },
   cardBottom: { flexDirection: 'row', justifyContent: 'space-between' },
   cardLabel: { color: 'rgba(255,255,255,0.6)', fontSize: 11, fontFamily: 'Manrope' },
