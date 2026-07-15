@@ -22,8 +22,8 @@ export function Tile({
   const Comp = onPress ? TouchableOpacity : View;
   return (
     <Comp activeOpacity={0.85} onPress={onPress} style={styles.tile}>
-      <View style={[styles.icon, { backgroundColor: accent ?? colors.tintCard }]}>
-        <Icon name={icon} size={20} stroke={stroke ?? colors.green} />
+      <View style={[styles.icon, { backgroundColor: accent ?? '#EAF1EC' }]}>
+        <Icon name={icon} size={21} stroke={stroke ?? colors.green} sw={1.8} />
       </View>
       {value ? (
         <Text style={styles.value}>{value}</Text>
@@ -37,7 +37,7 @@ export function Tile({
 
 const styles = StyleSheet.create({
   tile: {
-    width: 72,
+    flex: 1,
     backgroundColor: colors.card,
     borderRadius: 18,
     paddingVertical: 13,
@@ -45,11 +45,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderWidth: 1,
     borderColor: colors.line,
-    shadowColor: colors.green,
-    shadowOpacity: 0.06,
-    shadowRadius: 12,
-    shadowOffset: { width: 0, height: 4 },
-    elevation: 1,
   },
   icon: {
     width: 40,
@@ -59,7 +54,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     marginBottom: 8,
   },
-  label: { fontSize: 11, fontFamily: 'Sora', fontWeight: '600', color: colors.ink, textAlign: 'center' },
+  label: { fontSize: 11, fontFamily: 'Sora', fontWeight: '600', color: colors.inkSoft, textAlign: 'center', lineHeight: 13 },
   value: { fontSize: 14, fontFamily: 'Sora', fontWeight: '700', color: colors.ink },
   sub: { fontSize: 10, color: colors.sub, marginTop: 2, textAlign: 'center' },
 });
