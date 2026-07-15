@@ -67,8 +67,9 @@ export function Home() {
           <Text style={styles.name}>Ada Nwosu</Text>
         </View>
         <TouchableOpacity style={styles.campusPill} onPress={() => setCampusOpen(true)}>
-          <Icon name="caret" size={14} stroke={colors.inkSoft} />
+          <View style={styles.campusDot} />
           <Text style={styles.campusPillT}>{cd.label}</Text>
+          <Icon name="caret" size={13} stroke={colors.inkSoft} sw={2.4} />
         </TouchableOpacity>
         <TouchableOpacity style={styles.bell}>
           <Icon name="bell" size={22} stroke={colors.ink} />
@@ -201,9 +202,9 @@ export function Home() {
 
 function CampusPillLabel({ label, onTap }: { label: string; onTap: () => void }) {
   return (
-    <TouchableOpacity style={styles.campusPill} onPress={onTap}>
-      <Icon name="caret" size={14} stroke={colors.inkSoft} />
-      <Text style={styles.campusPillT}>{label}</Text>
+    <TouchableOpacity style={styles.campusBtn} onPress={onTap}>
+      <Text style={styles.campusBtnT}>{label}</Text>
+      <Icon name="caret" size={13} stroke={colors.green} sw={2.4} />
     </TouchableOpacity>
   );
 }
@@ -215,8 +216,11 @@ const styles = StyleSheet.create({
   avatarT: { color: '#fff', fontFamily: 'Sora', fontWeight: '700', fontSize: 18 },
   welcome: { ...typography.body, fontSize: 12.5 },
   name: { fontSize: 17, fontFamily: 'Sora', fontWeight: '700', color: colors.ink },
-  campusPill: { flexDirection: 'row', alignItems: 'center', gap: 6, backgroundColor: colors.tintCard, paddingVertical: 7, paddingHorizontal: 12, borderRadius: radius.pill },
-  campusPillT: { color: colors.inkSoft, fontFamily: 'Sora', fontWeight: '700', fontSize: 13 },
+  campusPill: { flexDirection: 'row', alignItems: 'center', gap: 5, backgroundColor: '#E7EBE3', paddingVertical: 6, paddingLeft: 11, paddingRight: 10, borderRadius: radius.pill },
+  campusDot: { width: 7, height: 7, borderRadius: 3.5, backgroundColor: colors.green },
+  campusPillT: { color: colors.inkSoft, fontFamily: 'Manrope', fontWeight: '700', fontSize: 11, letterSpacing: 0.3 },
+  campusBtn: { flexDirection: 'row', alignItems: 'center', gap: 4 },
+  campusBtnT: { color: colors.green, fontFamily: 'Manrope', fontWeight: '700', fontSize: 12.5 },
   bell: { position: 'relative', padding: 4 },
   bellDot: { position: 'absolute', top: 4, right: 4, width: 8, height: 8, borderRadius: 4, backgroundColor: colors.lime },
   wallet: {

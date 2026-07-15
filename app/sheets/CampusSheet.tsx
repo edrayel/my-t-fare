@@ -28,9 +28,12 @@ export function CampusSheet({ onDone }: { onDone: () => void }) {
       </Text>
       <TouchableOpacity style={styles.detect} onPress={detect}>
         <View style={styles.detectIcon}>
-          <Icon name={'autoDetect' as keyof typeof INLINE} size={20} stroke={colors.green} />
+          <Icon name={'autoDetect' as keyof typeof INLINE} size={20} stroke={colors.lime} sw={2} />
         </View>
-        <Text style={styles.detectT}>Auto-detect my location</Text>
+        <View style={{ flex: 1 }}>
+          <Text style={styles.detectT}>Auto-detect my location</Text>
+          <Text style={styles.detectSub}>Use GPS to find the nearest campus</Text>
+        </View>
       </TouchableOpacity>
 
       <View style={{ marginTop: 8, gap: 10 }}>
@@ -59,9 +62,10 @@ export function CampusSheet({ onDone }: { onDone: () => void }) {
 
 const styles = StyleSheet.create({
   lead: { ...typography.body, marginBottom: 12 },
-  detect: { flexDirection: 'row', alignItems: 'center', gap: 12, borderWidth: 1.5, borderColor: colors.green, borderRadius: 14, padding: 14, backgroundColor: colors.tintCard },
-  detectIcon: { width: 40, height: 40, borderRadius: 12, backgroundColor: colors.green, alignItems: 'center', justifyContent: 'center' },
-  detectT: { ...typography.label, color: colors.green },
+  detect: { flexDirection: 'row', alignItems: 'center', gap: 12, borderWidth: 1.5, borderColor: colors.green, borderRadius: 16, paddingVertical: 13, paddingHorizontal: 16, backgroundColor: colors.tintCard },
+  detectIcon: { width: 38, height: 38, borderRadius: 12, backgroundColor: colors.green, alignItems: 'center', justifyContent: 'center' },
+  detectT: { fontFamily: 'Sora', fontWeight: '700', fontSize: 14, color: colors.ink },
+  detectSub: { ...typography.body, fontSize: 12, marginTop: 1 },
   row: { flexDirection: 'row', alignItems: 'center', gap: 12, backgroundColor: colors.card, borderWidth: 1.5, borderColor: colors.line, borderRadius: 14, padding: 14 },
   rowOn: { borderColor: colors.green, backgroundColor: colors.tintCard },
   rowLabel: { ...typography.label, fontSize: 15, color: colors.ink },
