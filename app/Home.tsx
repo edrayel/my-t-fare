@@ -72,7 +72,7 @@ export function Home() {
           <Icon name="caret" size={13} stroke={colors.inkSoft} sw={2.4} />
         </TouchableOpacity>
         <TouchableOpacity style={styles.bell}>
-          <Icon name="bell" size={22} stroke={colors.ink} />
+          <Icon name="bell" size={19} stroke={colors.inkSoft} />
           <View style={styles.bellDot} />
         </TouchableOpacity>
       </View>
@@ -212,17 +212,17 @@ function CampusPillLabel({ label, onTap }: { label: string; onTap: () => void })
 const styles = StyleSheet.create({
   screen: { flex: 1, backgroundColor: colors.paper },
   header: { flexDirection: 'row', alignItems: 'center', gap: 12, paddingHorizontal: space.gutter, paddingTop: 58, paddingBottom: 8 },
-  avatar: { width: 44, height: 44, borderRadius: 14, backgroundColor: colors.green, alignItems: 'center', justifyContent: 'center' },
-  avatarT: { color: '#fff', fontFamily: 'Sora', fontWeight: '700', fontSize: 18 },
-  welcome: { ...typography.body, fontSize: 12.5 },
-  name: { fontSize: 17, fontFamily: 'Sora', fontWeight: '700', color: colors.ink },
+  avatar: { width: 42, height: 42, borderRadius: 14, backgroundColor: colors.green, alignItems: 'center', justifyContent: 'center' },
+  avatarT: { color: '#fff', fontFamily: 'Sora', fontWeight: '700', fontSize: 16 },
+  welcome: { fontFamily: 'Manrope', fontSize: 12, fontWeight: '600', color: '#75857c' },
+  name: { fontSize: 16, fontFamily: 'Sora', fontWeight: '600', color: colors.ink },
   campusPill: { flexDirection: 'row', alignItems: 'center', gap: 5, backgroundColor: '#E7EBE3', paddingVertical: 6, paddingLeft: 11, paddingRight: 10, borderRadius: radius.pill },
   campusDot: { width: 7, height: 7, borderRadius: 3.5, backgroundColor: colors.green },
   campusPillT: { color: colors.inkSoft, fontFamily: 'Manrope', fontWeight: '700', fontSize: 11, letterSpacing: 0.3 },
   campusBtn: { flexDirection: 'row', alignItems: 'center', gap: 4 },
   campusBtnT: { color: colors.green, fontFamily: 'Manrope', fontWeight: '700', fontSize: 12.5 },
-  bell: { position: 'relative', padding: 4 },
-  bellDot: { position: 'absolute', top: 4, right: 4, width: 8, height: 8, borderRadius: 4, backgroundColor: colors.lime },
+  bell: { position: 'relative', width: 40, height: 40, borderRadius: 12, backgroundColor: colors.card, borderWidth: 1, borderColor: colors.line, alignItems: 'center', justifyContent: 'center' },
+  bellDot: { position: 'absolute', top: 9, right: 10, width: 7, height: 7, borderRadius: 3.5, backgroundColor: colors.lime, borderWidth: 1.5, borderColor: '#fff' },
   wallet: {
     marginHorizontal: space.gutter,
     marginTop: 8,
