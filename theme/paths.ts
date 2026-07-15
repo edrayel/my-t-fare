@@ -36,7 +36,7 @@ export const INLINE = {
   homeTab: 'M3 10.5L12 3l9 7.5M5 9.5V21h14V9.5',
   activityTab: 'M12 7v5l3 2M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0',
   moneyTab: 'M3 17l5-5 4 4 8-9M21 7h-4M21 7v4',
-  profileTab: 'M12 8a4 4 0 1 0 0-8 4 4 0 0 0 0 8M5 21c0-3.9 3.1-7 7-7s7 3.1 7 7',
+  profileTab: 'M12 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8M5 21c0-3.9 3.1-7 7-7s7 3.1 7 7',
   cardLine: 'M2 5h20v14H2zM2 10h20',
   cardWifi: 'M5 12a7 7 0 0 1 0 0M8 9a4 4 0 0 1 0 6M11 6a8 8 0 0 1 0 12',
   feedLike: 'M12 21s-7-4.5-9.5-9A5 5 0 0 1 12 6a5 5 0 0 1 9.5 6c-2.5 4.5-9.5 9-9.5 9z',
