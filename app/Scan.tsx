@@ -43,6 +43,13 @@ export function Scan() {
   return (
     <View style={styles.screen}>
       <StatusBar style="light" />
+      <View style={styles.top}>
+        <TouchableOpacity style={styles.back} onPress={() => nav.goBack()}>
+          <Icon name="back" size={22} stroke={colors.paper} />
+        </TouchableOpacity>
+        <Text style={styles.title}>Scan to Pay</Text>
+        <View style={{ width: 22 }} />
+      </View>
       <View style={styles.cam}>
         {perm?.granted ? (
           <CameraView
@@ -65,14 +72,6 @@ export function Scan() {
             {scanning ? 'Looking for a QR code…' : 'Driver found · confirm fare below'}
           </Text>
         </View>
-      </View>
-
-      <View style={styles.top}>
-        <TouchableOpacity style={styles.back} onPress={() => nav.goBack()}>
-          <Icon name="back" size={22} stroke={colors.paper} />
-        </TouchableOpacity>
-        <Text style={styles.title}>Scan to Pay</Text>
-        <View style={{ width: 22 }} />
       </View>
 
       {found && (
@@ -113,11 +112,10 @@ export function Scan() {
 const styles = StyleSheet.create({
   screen: { flex: 1, backgroundColor: colors.greenDark },
   cam: {
-    position: 'absolute',
-    top: 92,
-    left: 22,
-    right: 22,
-    bottom: 300,
+    flex: 1,
+    marginHorizontal: 22,
+    marginTop: 8,
+    marginBottom: 16,
     borderRadius: 26,
     overflow: 'hidden',
     backgroundColor: '#15211b',
@@ -147,20 +145,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     paddingTop: 56,
+    paddingBottom: 8,
     paddingHorizontal: 22,
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
     zIndex: 4,
   },
   back: { padding: 4 },
   title: { color: colors.paper, fontSize: 18, fontFamily: 'Sora', fontWeight: '700' },
   driverSheet: {
-    position: 'absolute',
-    left: 0,
-    right: 0,
-    bottom: 0,
     backgroundColor: colors.card,
     borderTopLeftRadius: 28,
     borderTopRightRadius: 28,
