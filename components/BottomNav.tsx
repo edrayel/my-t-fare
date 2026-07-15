@@ -8,20 +8,20 @@ type TabKey = 'homeTab' | 'activityTab' | 'moneyTab' | 'profileTab';
 const TABS = [
   { name: 'home', label: 'Home', icon: 'homeTab' as TabKey },
   { name: 'trips', label: 'Activity', icon: 'activityTab' as TabKey },
-  { name: 'card', label: 'Money', icon: 'moneyTab' as TabKey },
+  { name: 'feed', label: 'Money', icon: 'moneyTab' as TabKey },
   { name: 'profile', label: 'Profile', icon: 'profileTab' as TabKey },
 ];
 
-export function BottomNav({ state, descriptors, navigation }: BottomTabBarProps) {
-  const activeIndex = state.index;
+export function BottomNav({ state, navigation }: BottomTabBarProps) {
+  const activeName = state.routes[state.index]?.name;
   return (
     <View style={styles.bar}>
-      {TABS.slice(0, 2).map((t, i) => (
+      {TABS.slice(0, 2).map((t) => (
         <TabItem
           key={t.name}
           icon={t.icon}
           label={t.label}
-          active={i === activeIndex}
+          active={activeName === t.name}
           onPress={() => navigation.navigate(t.name)}
         />
       ))}
@@ -34,12 +34,12 @@ export function BottomNav({ state, descriptors, navigation }: BottomTabBarProps)
           <Icon name="qr" size={26} stroke={colors.lime} />
         </View>
       </TouchableOpacity>
-      {TABS.slice(2).map((t, i) => (
+      {TABS.slice(2).map((t) => (
         <TabItem
           key={t.name}
           icon={t.icon}
           label={t.label}
-          active={i + 2 === activeIndex}
+          active={activeName === t.name}
           onPress={() => navigation.navigate(t.name)}
         />
       ))}

@@ -47,12 +47,15 @@ export interface FeedItem {
   category: string;
   live: boolean;
   time: string;
+  bg: [string, string];
+  chip: string;
+  chipFg: string;
   stat: string;
   statSub: string;
   title: string;
   body: string;
   source: string;
-  followed: boolean;
+  likes: number;
 }
 
 export interface Trip {
@@ -197,61 +200,76 @@ export const FEED: FeedItem[] = [
     id: 'f1',
     category: 'Markets',
     live: true,
-    time: '2m',
+    time: 'now',
+    bg: ['#0a4030', '#073023'],
+    chip: '#C7F03F',
+    chipFg: '#0a2117',
     stat: '₦1,540/$',
-    statSub: 'per dollar · now',
-    title: 'Naira steady against the dollar',
-    body: 'The naira holds at ₦1,540 to the dollar in early trading as CBN holds its line on liquidity.',
-    source: 'CBN · LIVE',
-    followed: false,
+    statSub: 'Naira +1.8% today',
+    title: 'Naira firms as CBN clears FX backlog',
+    body: 'Official rate strengthens for a third straight session as dollar liquidity improves.',
+    source: 'Reuters Africa',
+    likes: 1240,
   },
   {
     id: 'f2',
     category: 'Invest',
     live: false,
     time: '1h',
+    bg: ['#103a4a', '#0a2630'],
+    chip: '#7fd1e8',
+    chipFg: '#06222b',
     stat: '₦5,000',
-    statSub: 'min. treasury bill',
-    title: 'T-bills open for subscription',
-    body: 'The latest NTB auction is live — open from ₦5,000 for students building a habit.',
-    source: 'DMO',
-    followed: false,
+    statSub: 'Minimum to start',
+    title: '5 student-friendly ways to start investing',
+    body: 'From treasury bills to dollar-cost ETFs — build a portfolio on a stipend.',
+    source: 'MoneyDesk NG',
+    likes: 860,
   },
   {
     id: 'f3',
     category: 'Deal',
     live: false,
     time: '3h',
+    bg: ['#0C6B4F', '#0a4030'],
+    chip: '#C7F03F',
+    chipFg: '#0a2117',
     stat: '8% back',
-    statSub: 'on transport',
-    title: 'Get 8% back on every campus ride',
-    body: 'Tap to pay with My T-Fare and earn cashback on shuttle and keke trips this week.',
+    statSub: 'On data top-ups',
+    title: 'Pay for data from your T-Fare wallet, get 8% cashback',
+    body: 'Limited campus promo running till end of term. Auto-applied at checkout.',
     source: 'My T-Fare',
-    followed: false,
+    likes: 2110,
   },
   {
     id: 'f4',
     category: 'Markets',
     live: false,
-    time: '5h',
+    time: '2h',
+    bg: ['#1d3326', '#0c1f16'],
+    chip: '#9be8b4',
+    chipFg: '#06291a',
     stat: '22% p.a.',
-    statSub: 'fixed income yield',
-    title: 'Bond yields ease to 22%',
-    body: 'Yields on the 10-year FGN bond slipped as inflation expectations cooled month-on-month.',
-    source: 'FMDQ',
-    followed: false,
+    statSub: 'Money-market yield',
+    title: 'Where to park idle cash for 22% returns',
+    body: 'Money-market funds are beating savings accounts — here’s how they work.',
+    source: 'Nairametrics',
+    likes: 540,
   },
   {
     id: 'f5',
     category: 'Seminar',
     live: false,
-    time: 'Yesterday',
+    time: 'Sat 4PM',
+    bg: ['#3a2d10', '#1f1708'],
+    chip: '#f0c34a',
+    chipFg: '#241a04',
     stat: 'Free',
-    statSub: 'this weekend',
-    title: 'Fintech for students — free seminar',
-    body: 'A hands-on session on wallets, APIs and staying safe with money apps. Hostel common room, Saturday.',
-    source: 'My T-Fare',
-    followed: false,
+    statSub: 'Online webinar',
+    title: 'Budgeting on a student stipend',
+    body: 'A live 45-min session on stretching ₦30k/month. Seats are limited.',
+    source: 'T-Fare Academy',
+    likes: 305,
   },
 ];
 

@@ -21,6 +21,13 @@ export function fmtNaira(naira: number): string {
   return `₦${nf.format(naira)}`;
 }
 
+const cf = new Intl.NumberFormat('en-NG', { maximumFractionDigits: 0 });
+
+/** Format a plain count with thousands separators, e.g. 1240 -> "1,240". */
+export function fmtCount(n: number): string {
+  return cf.format(n);
+}
+
 /** Format a kobo integer with an explicit + sign when positive (for credits). */
 export function formatSigned(amount: number): string {
   const base = formatKobo(amount);
