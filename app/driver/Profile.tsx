@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { CommonActions } from '@react-navigation/native';
 import { StatusBar } from 'expo-status-bar';
@@ -11,7 +11,7 @@ export function DriverProfile() {
   const signOut = useAppStore((s) => s.signOut);
   const cd = useAppStore((s) => s.campusData());
   return (
-    <View style={styles.screen}>
+    <ScrollView style={styles.screen} contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
       <StatusBar style="dark" />
       <View style={styles.header}>
         <TouchableOpacity style={styles.back} onPress={() => nav.goBack()}>
@@ -30,19 +30,25 @@ export function DriverProfile() {
 
       <View style={styles.list}>
         <View style={styles.row}>
-          <Text style={styles.rowIcon}>🚐</Text>
+          <View style={styles.rowIcon}>
+            <Icon name="shuttle" size={20} stroke={colors.green} />
+          </View>
           <Text style={styles.rowLabel}>Vehicle</Text>
           <Text style={styles.rowValue}>{cd.plate}</Text>
         </View>
         <View style={styles.row}>
-          <Text style={styles.rowIcon}>📍</Text>
+          <View style={styles.rowIcon}>
+            <Icon name="pin" size={20} stroke={colors.green} />
+          </View>
           <Text style={styles.rowLabel}>Route</Text>
           <Text style={styles.rowValue}>
             {cd.routes[0][0]} → {cd.routes[0][1]}
           </Text>
         </View>
         <TouchableOpacity style={styles.row} activeOpacity={0.8}>
-          <Text style={styles.rowIcon}>🛡️</Text>
+          <View style={styles.rowIcon}>
+            <Icon name="shield" size={20} stroke={colors.green} />
+          </View>
           <Text style={styles.rowLabel}>Security & PIN</Text>
           <Icon name="chevron" size={16} stroke={colors.mut} />
         </TouchableOpacity>
@@ -58,12 +64,13 @@ export function DriverProfile() {
         <Text style={styles.signoutT}>Sign out</Text>
       </TouchableOpacity>
       <Text style={styles.footer}>My T-Fare v2.2 · Driver</Text>
-    </View>
+    </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
-  screen: { flex: 1, backgroundColor: colors.paper, paddingTop: 56 },
+  screen: { flex: 1, backgroundColor: colors.paper },
+  content: { paddingTop: 56, paddingBottom: 40 },
   header: { flexDirection: 'row', alignItems: 'center', gap: 14, paddingHorizontal: 20, marginBottom: 8 },
   back: { width: 40, height: 40, borderRadius: 13, borderWidth: 1, borderColor: colors.line, backgroundColor: colors.card, alignItems: 'center', justifyContent: 'center' },
   title: { fontFamily: SORA, fontWeight: '700', fontSize: 18, color: colors.ink },
@@ -74,7 +81,7 @@ const styles = StyleSheet.create({
   sub: { fontSize: 12, color: colors.sub, fontFamily: MANROPE },
   list: { marginTop: 12, backgroundColor: colors.card, marginHorizontal: space.gutter, borderRadius: 16, borderWidth: 1, borderColor: colors.line },
   row: { flexDirection: 'row', alignItems: 'center', gap: 12, padding: 16, borderBottomWidth: 1, borderBottomColor: colors.rowDivider },
-  rowIcon: { fontSize: 18 },
+  rowIcon: { width: 40, height: 40, borderRadius: 12, backgroundColor: colors.tintCard, alignItems: 'center', justifyContent: 'center' },
   rowLabel: { flex: 1, fontSize: 15, fontFamily: MANROPE, color: colors.ink, fontWeight: '600' },
   rowValue: { color: colors.sub, fontSize: 13, fontFamily: MANROPE },
   signout: { marginTop: 22, alignItems: 'center' },

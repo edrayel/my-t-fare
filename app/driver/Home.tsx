@@ -45,7 +45,7 @@ export function DriverHome() {
         <View style={styles.earnTop}>
           <Text style={styles.earnLabel}>Today's earnings</Text>
           <TouchableOpacity onPress={toggleHidden} style={styles.eyeBtn}>
-            <Icon name={hidden ? 'live' : 'live'} size={18} stroke="#fff" sw={1.8} />
+            <Icon name={hidden ? 'eyeOff' : 'eye'} size={18} stroke="#fff" sw={1.8} />
           </TouchableOpacity>
         </View>
         <Text style={styles.earnAmount}>{hidden ? '••••' : formatKobo(driverBalance)}</Text>
@@ -73,7 +73,7 @@ export function DriverHome() {
           <Text style={styles.primaryT}>Withdraw to Bank</Text>
         </TouchableOpacity>
         <TouchableOpacity style={[styles.primaryBtn, styles.greenBtn]} onPress={() => nav.navigate('driverGenerate')}>
-          <Text style={styles.primaryT}>Generate Payment code</Text>
+          <Text style={[styles.primaryT, styles.primaryTOnGreen]}>Generate Payment code</Text>
         </TouchableOpacity>
       </View>
       <TouchableOpacity style={styles.softBtn} onPress={() => nav.navigate('driverSoftPOS')}>
@@ -135,6 +135,7 @@ const styles = StyleSheet.create({
   primaryBtn: { flex: 1, backgroundColor: colors.card, borderWidth: 1, borderColor: colors.line, borderRadius: 16, paddingVertical: 16, alignItems: 'center' },
   greenBtn: { backgroundColor: colors.green, borderColor: colors.green },
   primaryT: { color: colors.ink, fontFamily: SORA, fontWeight: '700', fontSize: 13.5 },
+  primaryTOnGreen: { color: '#fff' },
   softBtn: { marginHorizontal: space.gutter, marginTop: 10, backgroundColor: colors.card, borderWidth: 1, borderColor: colors.line, borderRadius: 16, padding: 16, flexDirection: 'row', alignItems: 'center', gap: 12 },
   softT: { flex: 1, fontFamily: SORA, fontWeight: '600', fontSize: 13, color: colors.ink },
   section: { marginHorizontal: space.gutter, marginTop: 18, backgroundColor: colors.card, borderWidth: 1, borderColor: colors.line, borderRadius: 20, padding: 16 },
