@@ -49,10 +49,30 @@ export function Card() {
           <Text style={styles.statValue}>{formatKobo(balance)}</Text>
         </View>
         <View style={[styles.stat, styles.statB]}>
-          <Text style={styles.statLabel}>Status</Text>
-          <View style={styles.activePill}>
-            <Text style={styles.activeT}>Active</Text>
+          <Text style={styles.statLabel}>NFC</Text>
+          <View style={styles.nfcRow}>
+            <View style={styles.nfcDot} />
+            <Text style={styles.activeT}>Ready · tap to pay</Text>
           </View>
+        </View>
+      </View>
+      <View style={styles.tapCard}>
+        <Text style={styles.tapTitle}>Recent tap activity</Text>
+        <View style={styles.tapRow}>
+          <Icon name="cardWifi" size={18} stroke={colors.green} sw={1.8} />
+          <View style={{ flex: 1 }}>
+            <Text style={styles.tapName}>Yaba Gate · bus tap</Text>
+            <Text style={styles.tapSub}>Today · 08:12 · ₦150</Text>
+          </View>
+          <Text style={styles.tapAmt}>-₦150</Text>
+        </View>
+        <View style={styles.tapRow}>
+          <Icon name="cardWifi" size={18} stroke={colors.green} sw={1.8} />
+          <View style={{ flex: 1 }}>
+            <Text style={styles.tapName}>Akoka · top-up tap</Text>
+            <Text style={styles.tapSub}>Earlier · PalmPay</Text>
+          </View>
+          <Text style={styles.tapAmt2}>+₦2,000</Text>
         </View>
       </View>
 
@@ -104,6 +124,15 @@ const styles = StyleSheet.create({
   statValue: { color: colors.ink, fontSize: 18, fontFamily: 'Sora', fontWeight: '700', marginTop: 6 },
   activePill: { backgroundColor: colors.tintCard, borderRadius: 999, paddingVertical: 5, paddingHorizontal: 12, alignSelf: 'flex-start', marginTop: 6 },
   activeT: { color: colors.green, fontFamily: 'Sora', fontWeight: '700', fontSize: 13 },
+  nfcRow: { flexDirection: 'row', alignItems: 'center', gap: 7, marginTop: 6 },
+  nfcDot: { width: 8, height: 8, borderRadius: 4, backgroundColor: colors.green },
+  tapCard: { marginHorizontal: space.gutter, marginTop: 14, backgroundColor: colors.card, borderWidth: 1, borderColor: colors.line, borderRadius: radius.card, padding: 16 },
+  tapTitle: { fontFamily: 'Sora', fontWeight: '700', fontSize: 13.5, color: colors.ink, marginBottom: 12 },
+  tapRow: { flexDirection: 'row', alignItems: 'center', gap: 12, paddingVertical: 10, borderTopWidth: 1, borderTopColor: colors.rowDivider },
+  tapName: { fontFamily: 'Sora', fontWeight: '600', fontSize: 13, color: colors.ink },
+  tapSub: { fontSize: 11.5, color: colors.mut, fontFamily: 'Manrope', marginTop: 2 },
+  tapAmt: { fontFamily: 'Sora', fontWeight: '700', fontSize: 13, color: colors.ink },
+  tapAmt2: { fontFamily: 'Sora', fontWeight: '700', fontSize: 13, color: colors.green },
   order: {
     flexDirection: 'row',
     alignItems: 'center',

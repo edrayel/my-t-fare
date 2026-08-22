@@ -28,17 +28,22 @@ export function GiftPick() {
   const setMode = useAppStore((s) => s.setGiftMode);
   const setRecipient = useAppStore((s) => s.setGiftRecipient);
   const setAmount = useAppStore((s) => s.setGiftAmount);
+  const [q, setQ] = useState('');
 
   const pick = (r: Recipient) => {
     setRecipient(r);
     setAmount(0);
     nav.navigate('giftAmount');
   };
+  const filtered = RECIPIENTS.filter((r) => {
+    const s = q.toLowerCase();
+    return !s || r.name.toLowerCase().includes(s) || r.phone.includes(s);
+  });
 
   return (
     <View style={styles.screen}>
       <StatusBar style="dark" />
-      <Header title={mode === 'send' ? 'Gift a friend' : 'Request money'} onBack={() => nav.navigate('(tabs)', { screen: 'home' })} />
+      <Header title={mode === 'send' ? 'Gift a friend' : 'Request T-Fare'} onBack={() => nav.navigate('(tabs)', { screen: 'home' })} />
       <View style={styles.seg}>
         <TouchableOpacity style={[styles.segBtn, mode === 'send' && styles.segOn]} onPress={() => setMode('send')}>
           <Text style={[styles.segT, mode === 'send' && styles.segTOn]}>Send</Text>
@@ -56,9 +61,19 @@ export function GiftPick() {
         <Icon name="gift" size={26} stroke={colors.lime} />
       </View>
 
+      <View style={styles.searchRow}>
+        <Icon name="tag" size={18} stroke={colors.mut} />
+        <TextInput
+          style={styles.searchInput}
+          placeholder="Search by name or phone"
+          placeholderTextColor={colors.mut}
+          value={q}
+          onChangeText={setQ}
+        />
+      </View>
       <Text style={styles.sectionLbl}>Recent</Text>
       <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.recipients}>
-        {RECIPIENTS.map((r) => (
+        {filtered.map((r) => (
           <TouchableOpacity key={r.phone} style={styles.recip} onPress={() => pick(r)}>
             <View style={styles.recipAvatar}>
               <Text style={styles.recipT}>{r.initial}</Text>
@@ -344,7 +359,9 @@ const styles = StyleSheet.create({
   balanceStrip: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginHorizontal: space.gutter, marginTop: 16, backgroundColor: colors.greenDeep, borderRadius: radius.card, padding: 16 },
   balanceLabel: { color: 'rgba(255,255,255,0.75)', fontSize: 12.5, fontFamily: 'Manrope' },
   balanceVal: { color: '#fff', fontSize: 22, fontFamily: 'Sora', fontWeight: '700', marginTop: 2 },
-  sectionLbl: { paddingHorizontal: space.gutter, marginTop: 20, fontSize: 13, fontFamily: 'Manrope', fontWeight: '700', color: colors.sub },
+  searchRow: { flexDirection: 'row', alignItems: 'center', gap: 10, marginHorizontal: space.gutter, marginTop: 14, backgroundColor: colors.card, borderWidth: 1, borderColor: colors.line, borderRadius: 14, paddingHorizontal: 14, height: 46 },
+  searchInput: { flex: 1, fontSize: 14, color: colors.ink, fontFamily: 'Manrope' },
+  sectionLbl: { paddingHorizontal: space.gutter, marginTop: 18, fontSize: 13, fontFamily: 'Manrope', fontWeight: '700', color: colors.sub },
   recipients: { gap: 14, paddingHorizontal: space.gutter, paddingTop: 12 },
   recip: { width: 92, alignItems: 'center' },
   recipAvatar: { width: 56, height: 56, borderRadius: 28, backgroundColor: colors.green, alignItems: 'center', justifyContent: 'center' },

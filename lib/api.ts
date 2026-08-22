@@ -61,3 +61,23 @@ export async function requestQr(amountKobo?: number): Promise<{ qrPayload: strin
     shareUrl: 'https://mytfare.com/r/',
   };
 }
+
+/** GET /campuses/resolve — fake ~1.3s auto-detect. */
+export async function resolveCampus(_lat?: number, _lng?: number): Promise<{ label: string; city: string }> {
+  await delay(1300);
+  return { label: 'UNILAG', city: 'Lagos' };
+}
+
+export type VehicleEta = {
+  userDistanceM: number;
+  userEtaMin: number;
+  driverDistanceM: number;
+  driverEtaMin: number;
+  togetherEtaMin: number;
+};
+
+/** GET /vehicles/{id}/eta — stub for Campus Map 3-row panel. */
+export async function getVehicleEta(): Promise<VehicleEta> {
+  await delay(600);
+  return { userDistanceM: 180, userEtaMin: 3, driverDistanceM: 320, driverEtaMin: 4, togetherEtaMin: 4 };
+}
