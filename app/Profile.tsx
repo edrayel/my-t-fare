@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { CommonActions } from '@react-navigation/native';
 import { StatusBar } from 'expo-status-bar';
@@ -23,7 +23,7 @@ export function Profile() {
   const signOut = useAppStore((s) => s.signOut);
 
   return (
-    <View style={styles.screen}>
+    <ScrollView style={styles.screen} contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
       <StatusBar style="dark" />
       <View style={styles.top}>
         <View style={styles.avatar}>
@@ -81,12 +81,13 @@ export function Profile() {
       </TouchableOpacity>
 
       <Text style={styles.footer}>My T-Fare v2.2 · Tap. Ride. Go.</Text>
-    </View>
+    </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
-  screen: { flex: 1, backgroundColor: colors.paper, paddingTop: 56 },
+  screen: { flex: 1, backgroundColor: colors.paper },
+  content: { paddingTop: 56, paddingBottom: 40 },
   top: { alignItems: 'center', paddingVertical: 18, gap: 10 },
   avatar: { width: 76, height: 76, borderRadius: 38, backgroundColor: colors.green, alignItems: 'center', justifyContent: 'center' },
   avatarT: { color: '#fff', fontSize: 30, fontFamily: 'Sora', fontWeight: '700' },

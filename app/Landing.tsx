@@ -6,7 +6,6 @@ import { useAppStore } from '../store/useAppStore';
 
 export function Landing({ navigation }: any) {
   const setMode = useAppStore((s) => s.setMode);
-  const flashToast = useAppStore((s) => s.flashToast);
 
   return (
     <View style={styles.screen}>
@@ -26,7 +25,7 @@ export function Landing({ navigation }: any) {
             style={styles.userBtn}
             onPress={() => {
               setMode('passenger');
-              navigation.navigate('role');
+              navigation.navigate('signin');
             }}
           >
             <View style={styles.userIconWrap}>
@@ -43,7 +42,7 @@ export function Landing({ navigation }: any) {
             style={styles.driverBtn}
             onPress={() => {
               setMode('driver');
-              navigation.navigate('role');
+              navigation.navigate('signin');
             }}
           >
             <View style={styles.driverIconWrap}>
