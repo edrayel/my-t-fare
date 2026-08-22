@@ -18,6 +18,9 @@ export type Role =
 
 export type CampusKey = 'UNILAG' | 'LASU' | 'UNIPORT' | 'UI' | 'UNIBEN';
 
+export type AppMode = 'passenger' | 'driver';
+export type HomeView = 'campus' | 'normal';
+
 export type TripType = 'ride' | 'topup' | 'gift';
 
 export interface Campus {
@@ -287,6 +290,8 @@ const nextRef = () => `MTF-${Math.floor(1000 + Math.random() * 9000)}`;
 export interface AppState {
   // identity / onboarding
   authed: boolean;
+  mode: AppMode;
+  view: HomeView;
   role: Role;
   campus: CampusKey;
   phone: string;
@@ -295,6 +300,8 @@ export interface AppState {
   balance: number; // kobo
   points: number;
   trips: Trip[];
+  // scan → pay
+  seatCount: number; // 1-4, scales fare
   // gift / request flow
   giftMode: 'send' | 'request';
   giftRecipient: Recipient | null;
@@ -316,8 +323,12 @@ export interface AppState {
   // derived helpers
   campusData: () => Campus;
   fareNow: () => number;
+  fareTotal: () => number;
   routeNow: () => string;
   // actions
+  setMode: (m: AppMode) => void;
+  setView: (v: HomeView) => void;
+  setSeatCount: (n: number) => void;
   setRole: (r: Role) => void;
   setCampus: (k: CampusKey) => void;
   signIn: () => void;
@@ -336,6 +347,8 @@ let toastTimer: ReturnType<typeof setTimeout> | null = null;
 
 export const useAppStore = create<AppState>((set, get) => ({
   authed: false,
+  mode: 'passenger',
+  view: 'campus',
   role: 'Commuter',
   campus: 'UNILAG',
   phone: '803 124 9920',
@@ -344,6 +357,7 @@ export const useAppStore = create<AppState>((set, get) => ({
   balance: kobo(2450), // ₦2,450 (prototype showed 2450 ₦)
   points: 240,
   trips: seedTrips,
+  seatCount: 1,
 
   giftMode: 'send',
   giftRecipient: null,
@@ -366,11 +380,15 @@ export const useAppStore = create<AppState>((set, get) => ({
 
   campusData: () => CAMPUS[get().campus],
   fareNow: () => CAMPUS[get().campus].routes[0][2],
+  fareTotal: () => CAMPUS[get().campus].routes[0][2] * get().seatCount,
   routeNow: () => {
     const [o, d] = CAMPUS[get().campus].routes[0];
     return `${o} → ${d}`;
   },
 
+  setMode: (m) => set({ mode: m }),
+  setView: (v) => set({ view: v }),
+  setSeatCount: (n) => set({ seatCount: Math.max(1, Math.min(4, n)) }),
   setRole: (r) => set({ role: r }),
   setCampus: (k) => {
     set({ campus: k });
@@ -404,16 +422,18 @@ export const useAppStore = create<AppState>((set, get) => ({
 
   payRide: () => {
     const ref = nextRef();
-    const fare = get().fareNow();
+    const fare = get().fareTotal();
+    const seats = get().seatCount;
     set((s) => ({
       balance: s.balance - fare,
       points: s.points + 15,
       lastRef: ref,
+      seatCount: 1,
       trips: [
         {
           id: `r-${Date.now()}`,
           type: 'ride',
-          title: get().routeNow(),
+          title: `${get().routeNow()}${seats > 1 ? ` · ${seats} seats` : ''}`,
           sub: `${get().campusData().vehicle} · ${get().campusData().driver.split(' ')[0]}`,
           amount: -fare,
           time: new Date().toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' }),

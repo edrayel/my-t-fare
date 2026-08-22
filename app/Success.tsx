@@ -11,7 +11,7 @@ import { formatKobo } from '../lib/money';
 
 export function Success() {
   const nav = useNavigation<any>();
-  const fareNow = useAppStore((s) => s.fareNow());
+  const fareTotal = useAppStore((s) => s.fareTotal());
   const lastRef = useAppStore((s) => s.lastRef);
   const balance = useAppStore((s) => s.balance);
   const cd = useAppStore((s) => s.campusData());
@@ -24,13 +24,14 @@ export function Success() {
         <Icon name="check" size={48} stroke="#0a2117" sw={2.4} />
       </View>
       <Text style={styles.title}>Payment successful</Text>
-      <Text style={styles.amount}>{formatKobo(fareNow)}</Text>
+      <Text style={styles.amount}>{formatKobo(fareTotal)}</Text>
       <Text style={styles.to}>
         to {cd.driver} · {cd.vehicle}
       </Text>
 
       <View style={styles.rows}>
         <ResultRow label="Route" value={`${cd.routes[0][0]} → ${cd.routes[0][1]}`} onDark />
+        <ResultRow label="Paid via" value="Exact digital payment — no cash" onDark />
         <ResultRow label="Reference" value={lastRef || 'MTF-XXXX'} onDark />
         <ResultRow label="New balance" value={<Text style={{ ...typography.label, color: colors.lime }}>{formatKobo(balance)}</Text>} onDark />
       </View>

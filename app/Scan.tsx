@@ -19,6 +19,9 @@ export function Scan() {
   const [scanning, setScanning] = useState(true);
   const ran = useRef(false);
   const cd = useAppStore((s) => s.campusData());
+  const seatCount = useAppStore((s) => s.seatCount);
+  const fareTotal = useAppStore((s) => s.fareTotal());
+  const setSeatCount = useAppStore((s) => s.setSeatCount);
 
   useEffect(() => {
     if (ran.current || found) return;
@@ -101,16 +104,26 @@ export function Scan() {
             </Text>
             <Text style={styles.campusFare}>{`${cd.label} fare`}</Text>
           </View>
+          <View style={styles.seatRow}>
+            <Text style={styles.seatLabel}>Seats</Text>
+            <TouchableOpacity style={styles.seatBtn} onPress={() => setSeatCount(seatCount - 1)}>
+              <Icon name="minus" size={16} stroke={colors.ink} sw={2.4} />
+            </TouchableOpacity>
+            <Text style={styles.seatCount}>{seatCount}</Text>
+            <TouchableOpacity style={styles.seatBtn} onPress={() => setSeatCount(seatCount + 1)}>
+              <Icon name="plus" size={16} stroke={colors.ink} sw={2.4} />
+            </TouchableOpacity>
+          </View>
           <View style={styles.fareRow}>
             <Text style={styles.fareSym}>₦</Text>
-            <Text style={styles.fareNum}>{fmtCount(Math.round(found.fareKobo / 100))}</Text>
+            <Text style={styles.fareNum}>{fmtCount(Math.round(fareTotal / 100))}</Text>
           </View>
-          <SlideToPay onPay={payNow} amount={found.fareKobo} />
+          <SlideToPay onPay={payNow} amount={fareTotal} />
           <View style={styles.authRow}>
             <TouchableOpacity style={styles.finger} onPress={async () => { if (await bioAuth()) payNow(); }}>
               <Icon name="finger" size={26} stroke={colors.green} sw={1.5} />
             </TouchableOpacity>
-            <Text style={styles.help}>Tap the print to authorise · students ride fee-free, ₦0 charge</Text>
+            <Text style={styles.help}>Or tap your My T-Fare card on the driver's reader — either way works. Exact digital payment, no cash needed.</Text>
           </View>
         </View>
       )}
@@ -215,12 +228,16 @@ const styles = StyleSheet.create({
   },
   routeT: { fontSize: 13, fontFamily: 'Manrope', fontWeight: '600', color: '#2d3c34', flex: 1 },
   campusFare: { fontSize: 12, color: colors.mut, fontFamily: 'Manrope', fontWeight: '600' },
+  seatRow: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 14, marginBottom: 12 },
+  seatLabel: { fontSize: 12, fontWeight: '700', color: '#75857c', fontFamily: 'Manrope' },
+  seatBtn: { width: 32, height: 32, borderRadius: 10, borderWidth: 1.5, borderColor: colors.line, backgroundColor: colors.card, alignItems: 'center', justifyContent: 'center' },
+  seatCount: { fontFamily: 'Sora', fontWeight: '700', fontSize: 16, color: colors.ink, minWidth: 16, textAlign: 'center' },
   fareRow: {
     flexDirection: 'row',
     alignItems: 'baseline',
     justifyContent: 'center',
     gap: 3,
-    marginBottom: 16,
+    marginBottom: 14,
   },
   fareSym: { fontFamily: 'Sora', fontSize: 18, fontWeight: '600', color: colors.ink },
   fareNum: { fontFamily: 'Sora', fontSize: 36, fontWeight: '700', color: colors.ink, letterSpacing: -1 },

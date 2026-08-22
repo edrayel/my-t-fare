@@ -10,6 +10,7 @@ import { BioOverlay } from './components/BioOverlay';
 import { BottomNav } from './components/BottomNav';
 
 import { Onboarding, RoleSelect, SignIn, SignUp } from './app/Auth';
+import { Landing } from './app/Landing';
 import { Home } from './app/Home';
 import { Trips } from './app/Trips';
 import { Card } from './app/Card';
@@ -19,6 +20,9 @@ import { Scan } from './app/Scan';
 import { Processing } from './app/Processing';
 import { Success } from './app/Success';
 import { Receipt } from './app/Receipt';
+import { CampusMap } from './app/CampusMap';
+import { NormalTransit } from './app/NormalTransit';
+import { Spending } from './app/Spending';
 import {
   GiftPick,
   GiftAmount,
@@ -54,10 +58,11 @@ export default function App() {
     <GestureHandlerRootView style={{ flex: 1 }}>
       <NavigationContainer>
         <RootStack.Navigator
-          initialRouteName={authed ? '(tabs)' : 'onboarding'}
+          initialRouteName={authed ? '(tabs)' : 'landing'}
           screenOptions={{ headerShown: false, animation: 'slide_from_right', gestureEnabled: true }}
         >
           {/* Auth (pre-login) */}
+          <RootStack.Screen name="landing" component={Landing} />
           <RootStack.Screen name="onboarding" component={Onboarding} />
           <RootStack.Screen name="role" component={RoleSelect} />
           <RootStack.Screen name="signin" component={SignIn} />
@@ -65,6 +70,11 @@ export default function App() {
 
           {/* Main app */}
           <RootStack.Screen name="(tabs)" component={TabNavigator} />
+
+          {/* v3 passenger screens */}
+          <RootStack.Screen name="campusMap" component={CampusMap} />
+          <RootStack.Screen name="normalTransit" component={NormalTransit} />
+          <RootStack.Screen name="spending" component={Spending} />
 
           {/* Modal / flow screens (over tabs, not tabs themselves) */}
           <RootStack.Screen name="scan" component={Scan} options={{ animation: 'fade' }} />
