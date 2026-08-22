@@ -78,6 +78,7 @@ export function Onboarding({ navigation }: any) {
 export function RoleSelect({ navigation }: any) {
   const [sel, setSel] = useState<string | null>(null);
   const setRole = useAppStore((s) => s.setRole);
+  const setMode = useAppStore((s) => s.setMode);
   return (
     <View style={styles.screen}>
       <StatusBar style="dark" />
@@ -114,7 +115,10 @@ export function RoleSelect({ navigation }: any) {
           label={sel ? `Continue as ${sel}` : 'Continue'}
           disabled={!sel}
           onPress={() => {
-            if (sel) setRole(sel as any);
+            if (sel) {
+              setRole(sel as any);
+              setMode(sel === 'Driver' ? 'driver' : 'passenger');
+            }
             navigation.navigate('signin');
           }}
         />
@@ -129,9 +133,10 @@ export function SignIn({ navigation }: any) {
   const signIn = useAppStore((s) => s.signIn);
   const flashToast = useAppStore((s) => s.flashToast);
   const toggleBio = useAppStore((s) => s.toggleBio);
+  const mode = useAppStore((s) => s.mode);
   const go = () => {
     signIn();
-    navigation.navigate('(tabs)');
+    navigation.navigate(mode === 'driver' ? '(driverTabs)' : '(tabs)');
   };
   const onKey = (k: string) =>
     setPin((p) => {
@@ -183,6 +188,7 @@ export function SignUp({ navigation }: any) {
   const [phone, setPhone] = useState('');
   const [campus, setCampus] = useState<string | null>(null);
   const signIn = useAppStore((s) => s.signIn);
+  const mode = useAppStore((s) => s.mode);
   const C = ['UNILAG', 'LASU', 'UNIPORT', 'UI Ibadan', 'UNIBEN'];
   return (
     <ScrollView style={styles.screen} contentContainerStyle={styles.pad}>
@@ -209,7 +215,7 @@ export function SignUp({ navigation }: any) {
         })}
       </View>
       <View style={styles.ctaWrap}>
-        <CTA label="Create account" onPress={() => { signIn(); navigation.navigate('(tabs)'); }} />
+        <CTA label="Create account" onPress={() => { signIn(); navigation.navigate(mode === 'driver' ? '(driverTabs)' : '(tabs)'); }} />
       </View>
       <TouchableOpacity onPress={() => navigation.navigate('signin')}>
         <Text style={styles.footer}>Already have an account? <Text style={styles.link}>Sign in</Text></Text>

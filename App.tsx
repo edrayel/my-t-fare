@@ -23,6 +23,14 @@ import { Receipt } from './app/Receipt';
 import { CampusMap } from './app/CampusMap';
 import { NormalTransit } from './app/NormalTransit';
 import { Spending } from './app/Spending';
+import { DriverHome } from './app/driver/Home';
+import { DriverGenerate } from './app/driver/Generate';
+import { DriverVerify } from './app/driver/Verify';
+import { DriverSoftPOS } from './app/driver/SoftPOS';
+import { DriverWithdraw } from './app/driver/Withdraw';
+import { DriverHistory } from './app/driver/History';
+import { DriverProfile } from './app/driver/Profile';
+import { DriverBottomNav } from './components/DriverBottomNav';
 import {
   GiftPick,
   GiftAmount,
@@ -34,6 +42,7 @@ import {
 
 const RootStack = createNativeStackNavigator();
 const Tabs = createBottomTabNavigator();
+const DriverTabs = createBottomTabNavigator();
 
 function TabNavigator() {
   return (
@@ -51,14 +60,29 @@ function TabNavigator() {
   );
 }
 
+function DriverTabNavigator() {
+  return (
+    <DriverTabs.Navigator
+      initialRouteName="driverHome"
+      screenOptions={{ headerShown: false, animation: 'none' }}
+      tabBar={(props) => <DriverBottomNav {...props} />}
+    >
+      <DriverTabs.Screen name="driverHome" component={DriverHome} />
+      <DriverTabs.Screen name="driverHistory" component={DriverHistory} />
+      <DriverTabs.Screen name="driverProfile" component={DriverProfile} />
+    </DriverTabs.Navigator>
+  );
+}
+
 export default function App() {
   const authed = useAppStore((s) => s.authed);
+  const mode = useAppStore((s) => s.mode);
 
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <NavigationContainer>
         <RootStack.Navigator
-          initialRouteName={authed ? '(tabs)' : 'landing'}
+          initialRouteName={authed ? (mode === 'driver' ? '(driverTabs)' : '(tabs)') : 'landing'}
           screenOptions={{ headerShown: false, animation: 'slide_from_right', gestureEnabled: true }}
         >
           {/* Auth (pre-login) */}
@@ -70,11 +94,20 @@ export default function App() {
 
           {/* Main app */}
           <RootStack.Screen name="(tabs)" component={TabNavigator} />
+          <RootStack.Screen name="(driverTabs)" component={DriverTabNavigator} />
 
           {/* v3 passenger screens */}
           <RootStack.Screen name="campusMap" component={CampusMap} />
           <RootStack.Screen name="normalTransit" component={NormalTransit} />
           <RootStack.Screen name="spending" component={Spending} />
+
+          {/* Driver screens */}
+          <RootStack.Screen name="driverGenerate" component={DriverGenerate} />
+          <RootStack.Screen name="driverVerify" component={DriverVerify} />
+          <RootStack.Screen name="driverSoftPOS" component={DriverSoftPOS} />
+          <RootStack.Screen name="driverWithdraw" component={DriverWithdraw} />
+          <RootStack.Screen name="driverHistory" component={DriverHistory} />
+          <RootStack.Screen name="driverProfile" component={DriverProfile} />
 
           {/* Modal / flow screens (over tabs, not tabs themselves) */}
           <RootStack.Screen name="scan" component={Scan} options={{ animation: 'fade' }} />

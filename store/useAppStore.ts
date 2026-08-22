@@ -71,6 +71,23 @@ export interface Trip {
   day: 'today' | 'earlier';
 }
 
+export interface DriverTrip {
+  id: string;
+  title: string;
+  passengers: number;
+  amount: number; // kobo, positive = credit
+  method: 'qr' | 'nfc';
+  time: string;
+  day: 'today' | 'earlier';
+}
+
+export interface NearbyRider {
+  id: string;
+  name: string;
+  initial: string;
+  paid: boolean;
+}
+
 export interface Slide {
   icon: keyof typeof import('../theme/paths').P;
   title: string;
@@ -285,6 +302,18 @@ const seedTrips: Trip[] = [
   { id: 't6', type: 'ride', title: 'Main Gate → Senate', sub: 'Keke · shared', amount: -kobo(100), time: '08:30', day: 'earlier' },
 ];
 
+const seedDriverTrips: DriverTrip[] = [
+  { id: 'dt1', title: 'Main Gate → Akoka', passengers: 2, amount: kobo(300), method: 'qr', time: '08:22', day: 'today' },
+  { id: 'dt2', title: 'Akoka → Hostel', passengers: 1, amount: kobo(150), method: 'nfc', time: '07:55', day: 'today' },
+  { id: 'dt3', title: 'Faculty → Main Gate', passengers: 3, amount: kobo(450), method: 'qr', time: '18:10', day: 'earlier' },
+];
+
+const seedNearby: NearbyRider[] = [
+  { id: 'nr1', name: 'Ada Nwosu', initial: 'A', paid: true },
+  { id: 'nr2', name: 'Chidi O.', initial: 'C', paid: false },
+  { id: 'nr3', name: 'Tunde B.', initial: 'T', paid: false },
+];
+
 const nextRef = () => `MTF-${Math.floor(1000 + Math.random() * 9000)}`;
 
 export interface AppState {
@@ -302,6 +331,13 @@ export interface AppState {
   trips: Trip[];
   // scan → pay
   seatCount: number; // 1-4, scales fare
+  // driver
+  driverBalance: number; // kobo
+  driverTrips: DriverTrip[];
+  driverBalanceHidden: boolean;
+  softPOSAmount: number; // kobo, armed amount
+  softPOSEnabled: boolean;
+  nearbyRiders: NearbyRider[];
   // gift / request flow
   giftMode: 'send' | 'request';
   giftRecipient: Recipient | null;
@@ -339,6 +375,11 @@ export interface AppState {
   toggleFeedLike: (id: string) => void;
   toggleFeedFollow: (id: string) => void;
   toggleBio: (v: boolean) => void;
+  toggleDriverBalance: () => void;
+  setSoftPOSAmount: (n: number) => void;
+  setSoftPOSEnabled: (v: boolean) => void;
+  toggleNearbyPaid: (id: string) => void;
+  driverWithdraw: (amountKobo: number, dest: string) => { ok: boolean; error?: string };
   flashToast: (m: string) => void;
   clearToast: () => void;
 }
@@ -358,6 +399,12 @@ export const useAppStore = create<AppState>((set, get) => ({
   points: 240,
   trips: seedTrips,
   seatCount: 1,
+  driverBalance: kobo(18500),
+  driverTrips: seedDriverTrips,
+  driverBalanceHidden: false,
+  softPOSAmount: 0,
+  softPOSEnabled: true,
+  nearbyRiders: seedNearby,
 
   giftMode: 'send',
   giftRecipient: null,
@@ -472,6 +519,26 @@ export const useAppStore = create<AppState>((set, get) => ({
     set((s) => ({ feedFollowed: { ...s.feedFollowed, [id]: !s.feedFollowed[id] } })),
 
   toggleBio: (v) => set({ bioBusy: v }),
+  toggleDriverBalance: () => set((s) => ({ driverBalanceHidden: !s.driverBalanceHidden })),
+  setSoftPOSAmount: (n) => set({ softPOSAmount: n }),
+  setSoftPOSEnabled: (v) => set({ softPOSEnabled: v }),
+  toggleNearbyPaid: (id) =>
+    set((s) => ({
+      nearbyRiders: s.nearbyRiders.map((r) => (r.id === id ? { ...r, paid: !r.paid } : r)),
+    })),
+  driverWithdraw: (amountKobo: number, _dest: string) => {
+    const bal = get().driverBalance;
+    if (amountKobo > bal) return { ok: false, error: 'INSUFFICIENT_FUNDS' };
+    set((s) => ({
+      driverBalance: s.driverBalance - amountKobo,
+      driverTrips: [
+        { id: `dw-${Date.now()}`, title: 'Withdrawal', passengers: 0, amount: -amountKobo, method: 'qr', time: new Date().toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' }), day: 'today' },
+        ...s.driverTrips,
+      ],
+    }));
+    get().flashToast('Withdrawal queued');
+    return { ok: true };
+  },
 
   flashToast: (m) => {
     set({ toast: m });
