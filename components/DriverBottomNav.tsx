@@ -1,5 +1,6 @@
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { BottomTabBarProps } from '@react-navigation/bottom-tabs';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { colors, SORA } from '../theme/tokens';
 import { Icon } from './Icon';
 
@@ -10,8 +11,9 @@ const TABS = [
 
 export function DriverBottomNav({ state, navigation }: BottomTabBarProps) {
   const active = state.routes[state.index]?.name;
+  const insets = useSafeAreaInsets();
   return (
-    <View style={styles.bar}>
+    <View style={[styles.bar, { paddingBottom: Math.max(insets.bottom, 4), height: 70 + Math.max(insets.bottom - 4, 0) }]}>
       {TABS.slice(0, 1).map((t) => (
         <Tab key={t.name} label={t.label} icon={t.icon} active={active === t.name} onPress={() => navigation.navigate(t.name)} />
       ))}

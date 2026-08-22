@@ -28,7 +28,11 @@ export function Feed() {
           keyExtractor={(i) => i.id}
           pagingEnabled
           showsVerticalScrollIndicator={false}
+          snapToInterval={h}
+          snapToAlignment="start"
+          disableIntervalMomentum
           decelerationRate="fast"
+          extraData={JSON.stringify(liked) + JSON.stringify(followed)}
           getItemLayout={(_, index) => ({ length: h, offset: h * index, index })}
           renderItem={({ item }) => (
             <Card
