@@ -3,6 +3,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 import { useAppStore } from './store/useAppStore';
 import { Toast } from './components/Toast';
@@ -79,12 +80,14 @@ export default function App() {
   const mode = useAppStore((s) => s.mode);
 
   return (
-    <GestureHandlerRootView style={{ flex: 1 }}>
-      <NavigationContainer>
-        <RootStack.Navigator
-          initialRouteName={authed ? (mode === 'driver' ? '(driverTabs)' : '(tabs)') : 'landing'}
-          screenOptions={{ headerShown: false, animation: 'slide_from_right', gestureEnabled: true }}
-        >
+    <SafeAreaProvider>
+      <GestureHandlerRootView style={{ flex: 1 }}>
+        <NavigationContainer>
+          <RootStack.Navigator
+            key={authed ? mode : 'guest'}
+            initialRouteName={authed ? (mode === 'driver' ? '(driverTabs)' : '(tabs)') : 'landing'}
+            screenOptions={{ headerShown: false, animation: 'slide_from_right', gestureEnabled: true }}
+          >
           {/* Auth (pre-login) */}
           <RootStack.Screen name="landing" component={Landing} />
           <RootStack.Screen name="onboarding" component={Onboarding} />
@@ -123,9 +126,10 @@ export default function App() {
           <RootStack.Screen name="requestSuccess" component={RequestSuccess} />
           <RootStack.Screen name="requestQR" component={RequestQR} />
         </RootStack.Navigator>
-      </NavigationContainer>
-      <Toast />
-      <BioOverlay />
-    </GestureHandlerRootView>
+        </NavigationContainer>
+        <Toast />
+        <BioOverlay />
+      </GestureHandlerRootView>
+    </SafeAreaProvider>
   );
 }

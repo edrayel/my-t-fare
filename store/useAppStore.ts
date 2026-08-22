@@ -444,7 +444,7 @@ export const useAppStore = create<AppState>((set, get) => ({
 
   signIn: () => set({ authed: true }),
 
-  signOut: () => set({ authed: false }),
+  signOut: () => set({ authed: false, mode: 'passenger', view: 'campus', seatCount: 1, giftAmount: 0, giftRecipient: null, requestNote: '', requestQrPayload: '' }),
 
   setTopupAmount: (n: number) => set({ balance: n }),
 
@@ -468,8 +468,13 @@ export const useAppStore = create<AppState>((set, get) => ({
   },
 
   payRide: () => {
-    const ref = nextRef();
     const fare = get().fareTotal();
+    if (!Number.isFinite(fare) || fare <= 0) return { ref: '' };
+    if (fare > get().balance) {
+      get().flashToast('Insufficient funds');
+      return { ref: '' };
+    }
+    const ref = nextRef();
     const seats = get().seatCount;
     set((s) => ({
       balance: s.balance - fare,
@@ -493,8 +498,13 @@ export const useAppStore = create<AppState>((set, get) => ({
   },
 
   completeGift: () => {
-    const ref = nextRef();
     const amt = get().giftAmount;
+    if (!Number.isFinite(amt) || amt <= 0) return;
+    if (amt > get().balance) {
+      get().flashToast('Insufficient funds');
+      return;
+    }
+    const ref = nextRef();
     set((s) => ({
       balance: s.balance - amt,
       giftRef: ref,
@@ -527,6 +537,7 @@ export const useAppStore = create<AppState>((set, get) => ({
       nearbyRiders: s.nearbyRiders.map((r) => (r.id === id ? { ...r, paid: !r.paid } : r)),
     })),
   driverWithdraw: (amountKobo: number, _dest: string) => {
+    if (!Number.isFinite(amountKobo) || amountKobo <= 0) return { ok: false, error: 'INVALID_AMOUNT' };
     const bal = get().driverBalance;
     if (amountKobo > bal) return { ok: false, error: 'INSUFFICIENT_FUNDS' };
     set((s) => ({

@@ -55,11 +55,11 @@ export function DriverHome() {
         <View style={styles.earnSplit}>
           <View style={styles.splitBox}>
             <Text style={styles.splitLabel}>Via QR scans</Text>
-            <Text style={styles.splitVal}>₦1,200</Text>
+            <Text style={styles.splitVal}>{formatKobo(120000)}</Text>
           </View>
           <View style={styles.splitBox}>
             <Text style={styles.splitLabel}>Via NFC taps</Text>
-            <Text style={styles.splitVal}>₦650</Text>
+            <Text style={styles.splitVal}>{formatKobo(65000)}</Text>
           </View>
         </View>
         <View style={styles.accRow}>

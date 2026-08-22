@@ -1,5 +1,6 @@
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { CommonActions } from '@react-navigation/native';
 import { StatusBar } from 'expo-status-bar';
 import { colors, radius, typography, space } from '../theme/tokens';
 import { Icon } from '../components/Icon';
@@ -69,7 +70,13 @@ export function Profile() {
         ))}
       </View>
 
-      <TouchableOpacity style={styles.signout} onPress={() => { signOut(); nav.navigate('onboarding'); }}>
+      <TouchableOpacity
+        style={styles.signout}
+        onPress={() => {
+          signOut();
+          nav.dispatch(CommonActions.reset({ index: 0, routes: [{ name: 'landing' }] }));
+        }}
+      >
         <Text style={styles.signoutT}>Sign out</Text>
       </TouchableOpacity>
 

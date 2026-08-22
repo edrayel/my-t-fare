@@ -10,6 +10,7 @@ import {
   Dimensions,
 } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
+import { CommonActions } from '@react-navigation/native';
 import { colors, radius, typography, space, shadows } from '../theme/tokens';
 import { Icon } from '../components/Icon';
 import { CTA } from '../components/CTA';
@@ -135,8 +136,9 @@ export function SignIn({ navigation }: any) {
   const toggleBio = useAppStore((s) => s.toggleBio);
   const mode = useAppStore((s) => s.mode);
   const go = () => {
+    const target = mode === 'driver' ? '(driverTabs)' : '(tabs)';
     signIn();
-    navigation.navigate(mode === 'driver' ? '(driverTabs)' : '(tabs)');
+    navigation.dispatch(CommonActions.reset({ index: 0, routes: [{ name: target }] }));
   };
   const onKey = (k: string) =>
     setPin((p) => {
@@ -215,7 +217,14 @@ export function SignUp({ navigation }: any) {
         })}
       </View>
       <View style={styles.ctaWrap}>
-        <CTA label="Create account" onPress={() => { signIn(); navigation.navigate(mode === 'driver' ? '(driverTabs)' : '(tabs)'); }} />
+        <CTA
+          label="Create account"
+          onPress={() => {
+            const target = mode === 'driver' ? '(driverTabs)' : '(tabs)';
+            signIn();
+            navigation.dispatch(CommonActions.reset({ index: 0, routes: [{ name: target }] }));
+          }}
+        />
       </View>
       <TouchableOpacity onPress={() => navigation.navigate('signin')}>
         <Text style={styles.footer}>Already have an account? <Text style={styles.link}>Sign in</Text></Text>

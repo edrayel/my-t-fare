@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useId, useState } from 'react';
 import { View, StyleSheet, type LayoutChangeEvent } from 'react-native';
 import Svg, { Defs, LinearGradient as SvgLinearGradient, Stop, Rect } from 'react-native-svg';
 
@@ -28,6 +28,7 @@ export function Gradient({
   radius?: number;
 }) {
   const [size, setSize] = useState({ w: 0, h: 0 });
+  const id = useId().replace(/:/g, '');
   const coords = angleToCoords(angle);
 
   const onLayout = (e: LayoutChangeEvent) => {
@@ -44,7 +45,7 @@ export function Gradient({
       {size.w > 0 && size.h > 0 && (
         <Svg width={size.w} height={size.h}>
           <Defs>
-            <SvgLinearGradient id="g" x1={coords.x1} y1={coords.y1} x2={coords.x2} y2={coords.y2}>
+            <SvgLinearGradient id={id} x1={coords.x1} y1={coords.y1} x2={coords.x2} y2={coords.y2}>
               {colors.map((c, i) => (
                 <Stop
                   key={i}
@@ -54,7 +55,7 @@ export function Gradient({
               ))}
             </SvgLinearGradient>
           </Defs>
-          <Rect x="0" y="0" width={size.w} height={size.h} fill="url(#g)" />
+          <Rect x="0" y="0" width={size.w} height={size.h} fill={`url(#${id})`} />
         </Svg>
       )}
     </View>

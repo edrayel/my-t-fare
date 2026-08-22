@@ -1,9 +1,9 @@
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, Linking } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import { CameraView, useCameraPermissions, type BarcodeScanningResult } from 'expo-camera';
 import { TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { useEffect, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import { colors } from '../theme/tokens';
 import { Icon } from '../components/Icon';
 import { SlideToPay } from '../components/SlideToPay';
@@ -22,22 +22,30 @@ export function Scan() {
   const seatCount = useAppStore((s) => s.seatCount);
   const fareTotal = useAppStore((s) => s.fareTotal());
   const setSeatCount = useAppStore((s) => s.setSeatCount);
+  const balance = useAppStore((s) => s.balance);
+  const flashToast = useAppStore((s) => s.flashToast);
 
-  useEffect(() => {
-    if (ran.current || found) return;
-    ran.current = true;
-    resolveQr('').then((q) => {
-      setFound(q);
-      setScanning(false);
-    });
-  }, [found]);
-
-  const payNow = () => nav.navigate('processing');
+  const payNow = () => {
+    if (fareTotal > balance) {
+      flashToast('Insufficient funds');
+      return;
+    }
+    nav.navigate('processing');
+  };
 
   const onScanned = (r: BarcodeScanningResult) => {
     if (found || ran.current) return;
     ran.current = true;
     resolveQr(r.data).then((q) => {
+      setFound(q);
+      setScanning(false);
+    });
+  };
+
+  const devSimulate = () => {
+    if (found || ran.current) return;
+    ran.current = true;
+    resolveQr('dev').then((q) => {
       setFound(q);
       setScanning(false);
     });
@@ -54,32 +62,50 @@ export function Scan() {
         <View style={{ width: 40 }} />
       </View>
       <View style={styles.cam}>
-        {perm?.granted ? (
+        {!perm ? (
+          <View style={styles.perm}>
+            <Text style={styles.permT}>Loading camera…</Text>
+          </View>
+        ) : perm.granted ? (
           <CameraView
             style={StyleSheet.absoluteFill}
             barcodeScannerSettings={{ barcodeTypes: ['qr'] }}
             onBarcodeScanned={onScanned}
           />
-        ) : (
+        ) : perm.canAskAgain ? (
           <TouchableOpacity style={styles.perm} onPress={() => requestPerm()}>
             <Icon name="qr" size={40} stroke={colors.lime} />
             <Text style={styles.permT}>Tap to enable camera</Text>
           </TouchableOpacity>
+        ) : (
+          <TouchableOpacity style={styles.perm} onPress={() => Linking.openSettings()}>
+            <Icon name="qr" size={40} stroke={colors.lime} />
+            <Text style={styles.permT}>Camera blocked — open Settings</Text>
+          </TouchableOpacity>
         )}
-        <View style={styles.reticleWrap} pointerEvents="none">
-          <View style={styles.reticle}>
-            <View style={[styles.corner, styles.cornerTL]} />
-            <View style={[styles.corner, styles.cornerTR]} />
-            <View style={[styles.corner, styles.cornerBL]} />
-            <View style={[styles.corner, styles.cornerBR]} />
-            {scanning && <View style={styles.scanLine} />}
+        {perm?.granted && (
+          <View style={styles.reticleWrap} pointerEvents="none">
+            <View style={styles.reticle}>
+              <View style={[styles.corner, styles.cornerTL]} />
+              <View style={[styles.corner, styles.cornerTR]} />
+              <View style={[styles.corner, styles.cornerBL]} />
+              <View style={[styles.corner, styles.cornerBR]} />
+              {scanning && <View style={styles.scanLine} />}
+            </View>
           </View>
-        </View>
-        <View style={styles.statusBar}>
-          <Text style={[styles.status, !scanning && styles.statusFound]}>
-            {scanning ? 'Looking for a QR code…' : 'Driver found · confirm fare below'}
-          </Text>
-        </View>
+        )}
+        {perm?.granted && (
+          <View style={styles.statusBar}>
+            <Text style={[styles.status, !scanning && styles.statusFound]}>
+              {scanning ? 'Looking for a QR code…' : 'Driver found · confirm fare below'}
+            </Text>
+          </View>
+        )}
+        {__DEV__ && !found && (
+          <TouchableOpacity style={styles.devSim} onPress={devSimulate}>
+            <Text style={styles.devSimT}>Simulate QR (dev)</Text>
+          </TouchableOpacity>
+        )}
       </View>
 
       {found && (
@@ -106,12 +132,20 @@ export function Scan() {
           </View>
           <View style={styles.seatRow}>
             <Text style={styles.seatLabel}>Seats</Text>
-            <TouchableOpacity style={styles.seatBtn} onPress={() => setSeatCount(seatCount - 1)}>
-              <Icon name="minus" size={16} stroke={colors.ink} sw={2.4} />
+            <TouchableOpacity
+              style={[styles.seatBtn, seatCount <= 1 && styles.seatBtnDisabled]}
+              disabled={seatCount <= 1}
+              onPress={() => setSeatCount(seatCount - 1)}
+            >
+              <Icon name="minus" size={16} stroke={seatCount <= 1 ? colors.mut : colors.ink} sw={2.4} />
             </TouchableOpacity>
             <Text style={styles.seatCount}>{seatCount}</Text>
-            <TouchableOpacity style={styles.seatBtn} onPress={() => setSeatCount(seatCount + 1)}>
-              <Icon name="plus" size={16} stroke={colors.ink} sw={2.4} />
+            <TouchableOpacity
+              style={[styles.seatBtn, seatCount >= 4 && styles.seatBtnDisabled]}
+              disabled={seatCount >= 4}
+              onPress={() => setSeatCount(seatCount + 1)}
+            >
+              <Icon name="plus" size={16} stroke={seatCount >= 4 ? colors.mut : colors.ink} sw={2.4} />
             </TouchableOpacity>
           </View>
           <View style={styles.fareRow}>
@@ -174,6 +208,8 @@ const styles = StyleSheet.create({
   statusBar: { position: 'absolute', left: 0, right: 0, bottom: 22, alignItems: 'center' },
   status: { color: '#9fc4b4', fontFamily: 'Manrope', fontSize: 13, fontWeight: '600' },
   statusFound: { color: colors.lime, fontWeight: '700' },
+  devSim: { position: 'absolute', bottom: 6, alignSelf: 'center', backgroundColor: 'rgba(255,255,255,0.12)', paddingVertical: 6, paddingHorizontal: 12, borderRadius: 999 },
+  devSimT: { color: '#fff', fontSize: 11, fontFamily: 'Manrope', fontWeight: '700' },
   top: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -231,6 +267,7 @@ const styles = StyleSheet.create({
   seatRow: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 14, marginBottom: 12 },
   seatLabel: { fontSize: 12, fontWeight: '700', color: '#75857c', fontFamily: 'Manrope' },
   seatBtn: { width: 32, height: 32, borderRadius: 10, borderWidth: 1.5, borderColor: colors.line, backgroundColor: colors.card, alignItems: 'center', justifyContent: 'center' },
+  seatBtnDisabled: { opacity: 0.45 },
   seatCount: { fontFamily: 'Sora', fontWeight: '700', fontSize: 16, color: colors.ink, minWidth: 16, textAlign: 'center' },
   fareRow: {
     flexDirection: 'row',
