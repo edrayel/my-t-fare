@@ -31,6 +31,9 @@ export function Home() {
   const view = useAppStore((s) => s.view);
   const setView = useAppStore((s) => s.setView);
   const routeNow = useAppStore((s) => s.routeNow());
+  const notifications = useAppStore((s) => s.notifications);
+  const flashToast = useAppStore((s) => s.flashToast);
+  const unread = notifications.filter((n) => !n.read).length;
   const [topup, setTopup] = useState(false);
   const [campusOpen, setCampusOpen] = useState(false);
   const occupancyPct = 63; // 19/30 seats, keeps bar + label consistent
@@ -48,8 +51,11 @@ export function Home() {
     };
   }, [cd.label]);
 
-  const go = (to: string) => {
-    if (to === 'soon') return;
+  const go = (to: string, label?: string) => {
+    if (to === 'soon') {
+      flashToast(`${label ?? 'This feature'} — coming soon`);
+      return;
+    }
     nav.navigate(to);
   };
 
@@ -72,9 +78,9 @@ export function Home() {
             <Text style={[styles.segT, !isCampus && styles.segTOn]}>Normal</Text>
           </TouchableOpacity>
         </View>
-        <TouchableOpacity style={styles.bell}>
+        <TouchableOpacity style={styles.bell} onPress={() => nav.navigate('notifications')}>
           <Icon name="bell" size={18} stroke={colors.inkSoft} sw={1.8} />
-          <View style={styles.bellDot} />
+          {unread > 0 && <View style={styles.bellDot} />}
         </TouchableOpacity>
       </View>
 
@@ -166,7 +172,7 @@ export function Home() {
       <SectionHead title="Explore" />
       <View style={styles.grid4}>
         {EXPLORE.map((t) => (
-          <Tile key={t.label} icon={t.icon} label={t.label} accent={t.accent} stroke={t.stroke} onPress={() => go(t.to)} />
+          <Tile key={t.label} icon={t.icon} label={t.label} accent={t.accent} stroke={t.stroke} onPress={() => go(t.to, t.label)} />
         ))}
       </View>
 

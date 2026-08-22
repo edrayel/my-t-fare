@@ -41,9 +41,9 @@ export function Receipt() {
         </View>
       </View>
       <View style={styles.btns}>
-        <CTA label="Report issue" variant="outline" onPress={() => nav.navigate('trips')} />
+        <CTA label="Report issue" variant="outline" onPress={() => useAppStore.getState().flashToast('Support will reach out shortly')} />
         <View style={{ height: 12 }} />
-        <CTA label="Download" onPress={() => nav.navigate('trips')} />
+        <CTA label="Download" onPress={() => useAppStore.getState().flashToast('Receipt saved')} />
       </View>
     </View>
   );

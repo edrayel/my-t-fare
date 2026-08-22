@@ -14,11 +14,12 @@ export function DriverSoftPOS() {
   const setEnabled = useAppStore((s) => s.setSoftPOSEnabled);
   const amount = useAppStore((s) => s.softPOSAmount);
   const setAmount = useAppStore((s) => s.setSoftPOSAmount);
+  const simulate = useAppStore((s) => s.softPosSimulateTap);
   const [input, setInput] = useState(amount ? String(Math.round(amount / 100)) : '');
 
   const arm = () => {
-    const n = Number(input);
-    if (!n) return;
+    const n = Number(input.replace(/[^0-9]/g, ''));
+    if (!n || !Number.isFinite(n)) return;
     setAmount(kobo(n));
   };
 
@@ -48,8 +49,14 @@ export function DriverSoftPOS() {
           <Text style={styles.naira}>₦</Text>
           <TextInput style={styles.input} placeholder="0" placeholderTextColor={colors.mut} keyboardType="numeric" value={input} onChangeText={setInput} />
         </View>
-        <CTA label="Arm next tap" disabled={!Number(input)} onPress={arm} />
+        <CTA label="Arm next tap" disabled={!Number(input.replace(/[^0-9]/g, ''))} onPress={arm} />
         {amount > 0 && <Text style={styles.armed}>Armed · {formatKobo(amount)} on next tap</Text>}
+        {amount > 0 && enabled && (
+          <TouchableOpacity style={styles.simBtn} onPress={simulate}>
+            <Icon name="cardWifi" size={18} stroke={colors.green} />
+            <Text style={styles.simT}>Simulate card tap</Text>
+          </TouchableOpacity>
+        )}
       </View>
 
       <Text style={styles.section}>Recent tap payments</Text>
@@ -80,6 +87,8 @@ const styles = StyleSheet.create({
   naira: { fontFamily: SORA, fontWeight: '700', fontSize: 18, color: colors.ink },
   input: { flex: 1, fontFamily: SORA, fontWeight: '600', fontSize: 18, color: colors.ink },
   armed: { fontFamily: MANROPE, fontWeight: '700', fontSize: 12, color: colors.green, textAlign: 'center' },
+  simBtn: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 8, borderWidth: 1, borderColor: colors.green, borderRadius: 14, paddingVertical: 14, backgroundColor: '#EAF1EC' },
+  simT: { fontFamily: SORA, fontWeight: '700', fontSize: 13, color: colors.green },
   section: { fontFamily: SORA, fontWeight: '700', fontSize: 13, color: colors.ink, marginHorizontal: space.gutter, marginTop: 18, marginBottom: 8 },
   list: { marginHorizontal: space.gutter, backgroundColor: colors.card, borderWidth: 1, borderColor: colors.line, borderRadius: 16 },
   row: { flexDirection: 'row', alignItems: 'center', gap: 12, padding: 14 },

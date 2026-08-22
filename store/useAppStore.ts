@@ -88,6 +88,16 @@ export interface NearbyRider {
   paid: boolean;
 }
 
+export interface AppNotification {
+  id: string;
+  title: string;
+  body: string;
+  time: string;
+  day: 'today' | 'earlier';
+  read: boolean;
+  icon: string;
+}
+
 export interface Slide {
   icon: keyof typeof import('../theme/paths').P;
   title: string;
@@ -314,6 +324,12 @@ const seedNearby: NearbyRider[] = [
   { id: 'nr3', name: 'Tunde B.', initial: 'T', paid: false },
 ];
 
+const seedNotifications: AppNotification[] = [
+  { id: 'n1', title: 'Payment received', body: '₦150 · Main Gate → Akoka · 2 passengers', time: '08:22', day: 'today', read: false, icon: 'qr' as const },
+  { id: 'n2', title: 'Bus approaching Yaba Gate', body: 'Shuttle B2 is ~3 min away', time: '07:45', day: 'today', read: false, icon: 'bus' as const },
+  { id: 'n3', title: 'Top-up successful', body: '₦2,000 via OPay credited', time: 'Yesterday', day: 'earlier', read: true, icon: 'cardLine' as const },
+];
+
 const nextRef = () => `MTF-${Math.floor(1000 + Math.random() * 9000)}`;
 
 export interface AppState {
@@ -350,9 +366,13 @@ export interface AppState {
   setGiftAmount: (n: number) => void;
   setRequestNote: (s: string) => void;
   setRequestQr: (p: string) => void;
+  // notifications
+  notifications: AppNotification[];
   // ui
   feedLiked: Record<string, boolean>;
   feedFollowed: Record<string, boolean>;
+  feedSaved: Record<string, boolean>;
+  biometricsEnabled: boolean;
   bioBusy: boolean;
   toast: string | null;
   lastRef: string;
@@ -374,12 +394,17 @@ export interface AppState {
   completeGift: () => void;
   toggleFeedLike: (id: string) => void;
   toggleFeedFollow: (id: string) => void;
+  toggleFeedSave: (id: string) => void;
+  setBiometrics: (v: boolean) => void;
   toggleBio: (v: boolean) => void;
   toggleDriverBalance: () => void;
   setSoftPOSAmount: (n: number) => void;
   setSoftPOSEnabled: (v: boolean) => void;
   toggleNearbyPaid: (id: string) => void;
   driverWithdraw: (amountKobo: number, dest: string) => { ok: boolean; error?: string };
+  driverConfirmVerify: () => void;
+  softPosSimulateTap: () => void;
+  markNotificationsRead: () => void;
   flashToast: (m: string) => void;
   clearToast: () => void;
 }
@@ -419,8 +444,11 @@ export const useAppStore = create<AppState>((set, get) => ({
   setRequestNote: (s) => set({ requestNote: s }),
   setRequestQr: (p) => set({ requestQrPayload: p }),
 
+  notifications: seedNotifications,
   feedLiked: {},
   feedFollowed: {},
+  feedSaved: {},
+  biometricsEnabled: true,
   bioBusy: false,
   toast: null,
   lastRef: '',
@@ -527,6 +555,9 @@ export const useAppStore = create<AppState>((set, get) => ({
     set((s) => ({ feedLiked: { ...s.feedLiked, [id]: !s.feedLiked[id] } })),
   toggleFeedFollow: (id) =>
     set((s) => ({ feedFollowed: { ...s.feedFollowed, [id]: !s.feedFollowed[id] } })),
+  toggleFeedSave: (id) =>
+    set((s) => ({ feedSaved: { ...s.feedSaved, [id]: !s.feedSaved[id] }, toast: s.feedSaved[id] ? null : 'Saved' } as any)),
+  setBiometrics: (v) => set({ biometricsEnabled: v }),
 
   toggleBio: (v) => set({ bioBusy: v }),
   toggleDriverBalance: () => set((s) => ({ driverBalanceHidden: !s.driverBalanceHidden })),
@@ -550,6 +581,36 @@ export const useAppStore = create<AppState>((set, get) => ({
     get().flashToast('Withdrawal queued');
     return { ok: true };
   },
+  driverConfirmVerify: () => {
+    const paid = get().nearbyRiders.filter((r) => r.paid);
+    const count = paid.length;
+    if (!count) {
+      get().flashToast('Mark at least one rider as paid');
+      return;
+    }
+    const fare = get().fareNow();
+    const total = fare * count;
+    const method: DriverTrip['method'] = 'qr';
+    set((s) => ({
+      driverBalance: s.driverBalance + total,
+      driverTrips: [{ id: `dv-${Date.now()}`, title: get().routeNow(), passengers: count, amount: total, method, time: 'Just now', day: 'today' }, ...s.driverTrips],
+      nearbyRiders: s.nearbyRiders.map((r) => ({ ...r, paid: false })),
+    }));
+    get().flashToast(`Confirmed ${count} ${count === 1 ? 'rider' : 'riders'} · ${count * Math.round(fare / 100)} collected`);
+  },
+  softPosSimulateTap: () => {
+    const amt = get().softPOSAmount;
+    if (!amt || !get().softPOSEnabled) {
+      get().flashToast('Arm an amount first');
+      return;
+    }
+    set((s) => ({
+      driverBalance: s.driverBalance + amt,
+      driverTrips: [{ id: `sp-${Date.now()}`, title: get().routeNow(), passengers: 1, amount: amt, method: 'nfc', time: 'Just now', day: 'today' }, ...s.driverTrips],
+    }));
+    get().flashToast('Card tapped · payment received');
+  },
+  markNotificationsRead: () => set((s) => ({ notifications: s.notifications.map((n) => ({ ...n, read: true })) })),
 
   flashToast: (m) => {
     set({ toast: m });

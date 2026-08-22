@@ -24,6 +24,10 @@ import { Receipt } from './app/Receipt';
 import { CampusMap } from './app/CampusMap';
 import { NormalTransit } from './app/NormalTransit';
 import { Spending } from './app/Spending';
+import { Notifications } from './app/Notifications';
+import { OrderCard } from './app/OrderCard';
+import { PaymentMethods } from './app/PaymentMethods';
+import { Security } from './app/Security';
 import { DriverHome } from './app/driver/Home';
 import { DriverGenerate } from './app/driver/Generate';
 import { DriverVerify } from './app/driver/Verify';
@@ -103,6 +107,10 @@ export default function App() {
           <RootStack.Screen name="campusMap" component={CampusMap} />
           <RootStack.Screen name="normalTransit" component={NormalTransit} />
           <RootStack.Screen name="spending" component={Spending} />
+          <RootStack.Screen name="notifications" component={Notifications} />
+          <RootStack.Screen name="orderCard" component={OrderCard} />
+          <RootStack.Screen name="paymentMethods" component={PaymentMethods} />
+          <RootStack.Screen name="security" component={Security} />
 
           {/* Driver screens */}
           <RootStack.Screen name="driverGenerate" component={DriverGenerate} />
