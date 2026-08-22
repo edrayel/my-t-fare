@@ -81,3 +81,15 @@ export async function getVehicleEta(): Promise<VehicleEta> {
   await delay(600);
   return { userDistanceM: 180, userEtaMin: 3, driverDistanceM: 320, driverEtaMin: 4, togetherEtaMin: 4 };
 }
+
+export type PaymentCode = { id: string; amount: number; routeId: string; qrPayload: string; status: 'waiting' | 'paid' };
+
+export async function createPaymentCode(amountKobo: number, routeId: string): Promise<PaymentCode> {
+  await delay(700);
+  return { id: `pc-${Date.now()}`, amount: amountKobo, routeId, qrPayload: JSON.stringify({ t: 'pay', a: amountKobo, r: routeId, id: Date.now() }), status: 'waiting' };
+}
+
+export async function getDriverLocation(): Promise<{ label: string; city: string }> {
+  await delay(900);
+  return { label: 'Near Main Gate', city: 'Lagos' };
+}

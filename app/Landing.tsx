@@ -42,8 +42,7 @@ export function Landing({ navigation }: any) {
             activeOpacity={0.9}
             style={styles.driverBtn}
             onPress={() => {
-              setMode('passenger');
-              flashToast('Driver app coming soon — passenger mode in this build');
+              setMode('driver');
               navigation.navigate('role');
             }}
           >
