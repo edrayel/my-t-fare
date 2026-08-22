@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { View, Text, ScrollView, TouchableOpacity, TextInput, StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { StatusBar } from 'expo-status-bar';
@@ -97,14 +97,30 @@ export function GiftAmount() {
   const setNote = useAppStore((s) => s.setRequestNote);
   const setQr = useAppStore((s) => s.setRequestQr);
 
-  const onKey = (k: string) =>
-    setAmount(amount === 0 ? kobo(Number(k)) : amount + kobo(Number(k)));
-  const onDelete = () => setAmount(Math.floor(amount / 10));
+  const onKey = (k: string) => {
+    const naira = Math.floor(amount / 100);
+    const s = amount === 0 ? k : String(naira) + k;
+    if (s.length > 6) return;
+    if (!/^\d+$/.test(s)) return;
+    setAmount(kobo(Number(s)));
+  };
+  const onDelete = () => {
+    const naira = Math.floor(amount / 100);
+    const next = Math.floor(naira / 10);
+    setAmount(kobo(next));
+  };
 
   const chips = mode === 'send' ? [200, 500, 1000, 2000] : [500, 1000, 2000, 5000];
+  const balance = useAppStore((s) => s.balance);
+  const flashToast = useAppStore((s) => s.flashToast);
 
   const next = async () => {
     if (mode === 'send') {
+      if (!Number.isFinite(amount) || amount <= 0) return;
+      if (amount > balance) {
+        flashToast('Insufficient funds');
+        return;
+      }
       nav.navigate('giftConfirm');
     } else {
       const { qrPayload } = await requestQr(amount || undefined);
@@ -172,19 +188,36 @@ export function GiftConfirm() {
   const amount = useAppStore((s) => s.giftAmount);
   const completeGift = useAppStore((s) => s.completeGift);
   const toggleBio = useAppStore((s) => s.toggleBio);
+  const balance = useAppStore((s) => s.balance);
+  const flashToast = useAppStore((s) => s.flashToast);
   const [pin, setPin] = useState('');
+  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  useEffect(() => () => { if (timerRef.current) clearTimeout(timerRef.current); }, []);
 
   const go = () => {
+    if (amount > balance) {
+      flashToast('Insufficient funds');
+      setPin('');
+      return;
+    }
     completeGift();
-    nav.navigate('giftSuccess');
+    if (useAppStore.getState().giftRef) nav.navigate('giftSuccess');
   };
   const onKey = (k: string) =>
     setPin((p) => {
       if (p.length >= 4) return p;
       const next = p + k;
-      if (next.length === 4) setTimeout(go, 320);
+      if (next.length === 4) {
+        if (timerRef.current) clearTimeout(timerRef.current);
+        timerRef.current = setTimeout(go, 320);
+      }
       return next;
     });
+  const onDelete = (p: string) => {
+    if (timerRef.current) clearTimeout(timerRef.current);
+    return p.slice(0, -1);
+  };
   const bio = async () => {
     toggleBio(true);
     const ok = await bioAuth('Authorise gift');
@@ -208,7 +241,7 @@ export function GiftConfirm() {
       )}
       <PinDots pin={pin} />
       <View style={styles.keypad}>
-        <Keypad onKey={onKey} onDelete={() => setPin((p) => p.slice(0, -1))} />
+        <Keypad onKey={onKey} onDelete={() => setPin((p) => onDelete(p))} />
       </View>
       <TouchableOpacity style={styles.finger} onPress={bio}>
         <Icon name="finger" size={24} stroke={colors.green} />

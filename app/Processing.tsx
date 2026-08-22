@@ -18,7 +18,11 @@ export function Processing() {
 
   useEffect(() => {
     const t = setTimeout(() => {
-      payRide();
+      const r = payRide();
+      if (!r.ref) {
+        if (nav.canGoBack()) nav.goBack();
+        return;
+      }
       nav.navigate('success');
     }, 1100);
     return () => clearTimeout(t);

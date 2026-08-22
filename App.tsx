@@ -82,6 +82,7 @@ export default function App() {
     <GestureHandlerRootView style={{ flex: 1 }}>
       <NavigationContainer>
         <RootStack.Navigator
+          key={authed ? mode : 'guest'}
           initialRouteName={authed ? (mode === 'driver' ? '(driverTabs)' : '(tabs)') : 'landing'}
           screenOptions={{ headerShown: false, animation: 'slide_from_right', gestureEnabled: true }}
         >

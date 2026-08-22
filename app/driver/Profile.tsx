@@ -1,5 +1,6 @@
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { CommonActions } from '@react-navigation/native';
 import { StatusBar } from 'expo-status-bar';
 import { colors, SORA, MANROPE, space } from '../../theme/tokens';
 import { Icon } from '../../components/Icon';
@@ -51,7 +52,7 @@ export function DriverProfile() {
         style={styles.signout}
         onPress={() => {
           signOut();
-          nav.navigate('landing');
+          nav.dispatch(CommonActions.reset({ index: 0, routes: [{ name: 'landing' }] }));
         }}
       >
         <Text style={styles.signoutT}>Sign out</Text>
