@@ -1,23 +1,39 @@
 import { useState, useCallback } from 'react';
-import { View, Text, FlatList, TouchableOpacity, StyleSheet, type LayoutChangeEvent } from 'react-native';
+import { View, Text, FlatList, TouchableOpacity, StyleSheet, Share, type LayoutChangeEvent } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import { Icon } from '../components/Icon';
 import { Gradient } from '../components/Gradient';
+import { Sheet } from '../components/Sheet';
 import { FEED, useAppStore, type FeedItem } from '../store/useAppStore';
 import { fmtCount } from '../lib/money';
 
 const TOP = 54;
 
+const MOCK_COMMENTS = [
+  { name: 'Ada', body: 'This is super helpful, thanks for sharing!' },
+  { name: 'Chidi', body: 'Naira update is exactly what I needed today.' },
+  { name: 'Tunde', body: 'Saving for later — great breakdown.' },
+];
+
 export function Feed() {
   const liked = useAppStore((s) => s.feedLiked);
   const followed = useAppStore((s) => s.feedFollowed);
+  const saved = useAppStore((s) => s.feedSaved);
   const toggleLike = useAppStore((s) => s.toggleFeedLike);
   const toggleFollow = useAppStore((s) => s.toggleFeedFollow);
+  const toggleSave = useAppStore((s) => s.toggleFeedSave);
   const [h, setH] = useState(0);
+  const [commentId, setCommentId] = useState<string | null>(null);
 
   const onLayout = useCallback((e: LayoutChangeEvent) => {
     setH(e.nativeEvent.layout.height);
   }, []);
+
+  const onShare = async (item: FeedItem) => {
+    try {
+      await Share.share({ message: `${item.title}\n\n${item.body}\n— ${item.source}` });
+    } catch {}
+  };
 
   return (
     <View style={styles.screen} onLayout={onLayout}>
@@ -32,20 +48,39 @@ export function Feed() {
           snapToAlignment="start"
           disableIntervalMomentum
           decelerationRate="fast"
-          extraData={JSON.stringify(liked) + JSON.stringify(followed)}
+          extraData={JSON.stringify(liked) + JSON.stringify(followed) + JSON.stringify(saved)}
           getItemLayout={(_, index) => ({ length: h, offset: h * index, index })}
           renderItem={({ item }) => (
             <Card
               item={item}
               height={h}
               liked={!!liked[item.id]}
+              saved={!!saved[item.id]}
               followed={!!followed[item.id]}
               onLike={() => toggleLike(item.id)}
+              onSave={() => toggleSave(item.id)}
+              onShare={() => onShare(item)}
+              onComment={() => setCommentId(item.id)}
               onFollow={() => toggleFollow(item.id)}
             />
           )}
         />
       )}
+      <Sheet open={!!commentId} onClose={() => setCommentId(null)} title="Comments">
+        <View style={{ gap: 14 }}>
+          {MOCK_COMMENTS.map((c) => (
+            <View key={c.name} style={styles.commentRow}>
+              <View style={styles.commentAvatar}>
+                <Text style={styles.commentInitial}>{c.name[0]}</Text>
+              </View>
+              <View style={{ flex: 1 }}>
+                <Text style={styles.commentName}>{c.name}</Text>
+                <Text style={styles.commentBody}>{c.body}</Text>
+              </View>
+            </View>
+          ))}
+        </View>
+      </Sheet>
     </View>
   );
 }
@@ -54,15 +89,23 @@ function Card({
   item,
   height,
   liked,
+  saved,
   followed,
   onLike,
+  onSave,
+  onShare,
+  onComment,
   onFollow,
 }: {
   item: FeedItem;
   height: number;
   liked: boolean;
+  saved: boolean;
   followed: boolean;
   onLike: () => void;
+  onSave: () => void;
+  onShare: () => void;
+  onComment: () => void;
   onFollow: () => void;
 }) {
   return (
@@ -94,18 +137,18 @@ function Card({
           <Icon name="feedLike" size={29} sw={1.8} stroke={liked ? '#ff5a7a' : '#fff'} fill={liked ? '#ff5a7a' : 'none'} />
           <Text style={styles.railT}>{fmtCount(item.likes + (liked ? 1 : 0))}</Text>
         </TouchableOpacity>
-        <View style={styles.railBtn}>
+        <TouchableOpacity style={styles.railBtn} activeOpacity={0.8} onPress={onComment}>
           <Icon name="feedComment" size={28} sw={1.8} stroke="#fff" />
           <Text style={styles.railT}>84</Text>
-        </View>
-        <View style={styles.railBtn}>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.railBtn} activeOpacity={0.8} onPress={onShare}>
           <Icon name="feedShare" size={28} sw={1.8} stroke="#fff" />
           <Text style={styles.railT}>Share</Text>
-        </View>
-        <View style={styles.railBtn}>
-          <Icon name="feedSave" size={28} sw={1.8} stroke="#fff" />
-          <Text style={styles.railT}>Save</Text>
-        </View>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.railBtn} activeOpacity={0.8} onPress={onSave}>
+          <Icon name="feedSave" size={28} sw={1.8} stroke={saved ? '#C7F03F' : '#fff'} fill={saved ? '#C7F03F' : 'none'} />
+          <Text style={styles.railT}>{saved ? 'Saved' : 'Save'}</Text>
+        </TouchableOpacity>
       </View>
 
       <View style={styles.bottom}>
@@ -152,4 +195,9 @@ const styles = StyleSheet.create({
   followPillOn: { backgroundColor: 'rgba(255,255,255,0.9)', borderColor: 'rgba(255,255,255,0.9)' },
   followT: { fontSize: 11, color: 'rgba(255,255,255,0.45)', fontWeight: '700', fontFamily: 'Manrope' },
   followTOn: { color: '#0a2117' },
+  commentRow: { flexDirection: 'row', gap: 12 },
+  commentAvatar: { width: 36, height: 36, borderRadius: 12, backgroundColor: '#EAF1EC', alignItems: 'center', justifyContent: 'center' },
+  commentInitial: { fontFamily: 'Sora', fontWeight: '700', fontSize: 14, color: '#0C6B4F' },
+  commentName: { fontFamily: 'Sora', fontWeight: '700', fontSize: 13, color: '#0B1512' },
+  commentBody: { fontFamily: 'Manrope', fontSize: 13, color: '#75857c', marginTop: 2, lineHeight: 18 },
 });

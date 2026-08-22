@@ -59,6 +59,9 @@ export function Profile() {
             onPress={() => {
               if (s.label === 'My T-Fare Points') nav.navigate('spending');
               if (s.label === 'Saved routes') nav.navigate('campusMap');
+              if (s.label === 'Payment methods') nav.navigate('paymentMethods');
+              if (s.label === 'Notifications') nav.navigate('notifications');
+              if (s.label === 'Security & PIN') nav.navigate('security');
             }}
           >
             <View style={styles.rowIcon}>

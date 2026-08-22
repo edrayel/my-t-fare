@@ -45,7 +45,7 @@ export function DriverProfile() {
             {cd.routes[0][0]} → {cd.routes[0][1]}
           </Text>
         </View>
-        <TouchableOpacity style={styles.row} activeOpacity={0.8}>
+        <TouchableOpacity style={styles.row} activeOpacity={0.8} onPress={() => nav.navigate('security')}>
           <View style={styles.rowIcon}>
             <Icon name="shield" size={20} stroke={colors.green} />
           </View>

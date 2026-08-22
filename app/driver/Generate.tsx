@@ -45,6 +45,8 @@ export function DriverGenerate() {
           <Text style={styles.qrAmount}>₦{Math.round(genAmount / 100)} · {cd.routes[routeIdx][0]} → {cd.routes[routeIdx][1]}</Text>
           <Text style={styles.waiting}>Waiting for payment…</Text>
           <View style={styles.qrActions}>
+            <CTA label="Simulate passenger scan" variant="outline" onPress={() => { setQr(null); nav.navigate('driverVerify'); }} />
+            <View style={{ height: 10 }} />
             <CTA label="New QR" variant="outline" onPress={() => setQr(null)} />
             <View style={{ height: 10 }} />
             <CTA label="Done" onPress={() => nav.goBack()} />

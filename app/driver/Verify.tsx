@@ -11,6 +11,7 @@ export function DriverVerify() {
   const riders = useAppStore((s) => s.nearbyRiders);
   const toggle = useAppStore((s) => s.toggleNearbyPaid);
   const fare = useAppStore((s) => s.fareNow());
+  const confirm = useAppStore((s) => s.driverConfirmVerify);
   return (
     <ScrollView style={styles.screen} contentContainerStyle={{ paddingBottom: 30 }}>
       <StatusBar style="dark" />
@@ -48,7 +49,13 @@ export function DriverVerify() {
       </View>
 
       <View style={{ paddingHorizontal: space.gutter, marginTop: 18 }}>
-        <CTA label={`Confirm fare received · ₦${Math.round(fare / 100)}`} onPress={() => nav.goBack()} />
+        <CTA
+          label={`Confirm fare received · ₦${Math.round(fare / 100)}`}
+          onPress={() => {
+            confirm();
+            nav.goBack();
+          }}
+        />
       </View>
     </ScrollView>
   );

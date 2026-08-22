@@ -76,7 +76,7 @@ export function Card() {
         </View>
       </View>
 
-      <TouchableOpacity style={styles.order} activeOpacity={0.9}>
+      <TouchableOpacity style={styles.order} activeOpacity={0.9} onPress={() => nav.navigate('orderCard')}>
         <View style={styles.orderIcon}>
           <Icon name="orderCard" size={22} stroke={colors.lime} />
         </View>
