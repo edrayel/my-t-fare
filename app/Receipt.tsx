@@ -31,6 +31,7 @@ export function Receipt() {
         <View style={styles.paidPill}>
           <Text style={styles.paidT}>PAID</Text>
         </View>
+        <View style={styles.dashed} />
         <View style={styles.rows}>
           <ResultRow label="Details" value={title} />
           <ResultRow label="Info" value={sub} />
@@ -54,6 +55,7 @@ const styles = StyleSheet.create({
   amount: { ...typography.amount, marginTop: 12 },
   paidPill: { backgroundColor: colors.green, borderRadius: radius.pill, paddingVertical: 5, paddingHorizontal: 14, marginTop: 10 },
   paidT: { color: '#fff', fontFamily: 'Sora', fontWeight: '700', fontSize: 12, letterSpacing: 1 },
-  rows: { width: '100%', marginTop: 18 },
+  dashed: { width: '100%', height: 1, borderTopWidth: 1, borderTopColor: colors.line, borderStyle: 'dashed', marginTop: 18 },
+  rows: { width: '100%', marginTop: 12 },
   btns: { paddingHorizontal: space.gutter, marginTop: 18, width: '100%' },
 });
