@@ -33,14 +33,15 @@ export function Home() {
   const routeNow = useAppStore((s) => s.routeNow());
   const [topup, setTopup] = useState(false);
   const [campusOpen, setCampusOpen] = useState(false);
-  const [eta, setEta] = useState({ userEtaMin: 3, driverEtaMin: 4, occupancy: 68 });
+  const occupancyPct = 63; // 19/30 seats, keeps bar + label consistent
+  const [eta, setEta] = useState({ userEtaMin: 3, driverEtaMin: 4 });
   const isCampus = view === 'campus';
 
   useEffect(() => {
     let alive = true;
     getVehicleEta().then((e) => {
       if (!alive) return;
-      setEta({ userEtaMin: e.userEtaMin, driverEtaMin: e.driverEtaMin, occupancy: 62 });
+      setEta({ userEtaMin: e.userEtaMin, driverEtaMin: e.driverEtaMin });
     });
     return () => {
       alive = false;
@@ -138,7 +139,7 @@ export function Home() {
           <View style={styles.occupancyRow}>
             <Text style={styles.occupancyLabel}>Onboard: 19/30 seats</Text>
             <View style={styles.occupancyTrack}>
-              <View style={[styles.occupancyFill, { width: `${eta.occupancy}%` }]} />
+              <View style={[styles.occupancyFill, { width: `${occupancyPct}%` }]} />
             </View>
           </View>
           <View style={styles.etaRow}>

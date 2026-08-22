@@ -23,7 +23,7 @@ export function CampusMap() {
     };
   }, []);
 
-  const occupancyPct = 64;
+  const occupancyPct = 63; // 19/30, matches Home
 
   return (
     <ScrollView style={styles.screen} contentContainerStyle={{ paddingBottom: 30 }} showsVerticalScrollIndicator={false}>
